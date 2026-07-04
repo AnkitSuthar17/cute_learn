@@ -17,6 +17,12 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v4
 
+      - name: Show Repository
+        shell: bash
+        run: |
+         pwd
+          ls -R
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
