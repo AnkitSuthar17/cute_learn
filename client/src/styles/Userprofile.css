@@ -1,0 +1,163 @@
+.Userp {
+  /* border: 2px solid green; */
+  width: 100%;
+  background-color: #e9eff6;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  border-top-right-radius: 1vw;
+  border-bottom-right-radius: 1vw;
+}
+
+.userpdiv1 {
+  /* border: 2px solid red; */
+  width: 95%;
+  height: 30%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #b11d37;
+  border-radius: 1vw 1vw;
+}
+.userpdiv1div1 {
+  /* border: 2px solid green; */
+  width: 70%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.userpdiv1div1div1 {
+  width: 95%;
+  height: 30%;
+  /* border: 2px solid yellow; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.userpdiv1div1div1 > h2 {
+  width: 50%;
+  /* border: 2px solid blue; */
+}
+.userpdiv1div1div1 > button {
+  background-color: rgb(4, 17, 44);
+  width: 25%;
+  padding: 1.5vh;
+  font-size: 1.2vw;
+  border: none;
+  border-radius: 40px 40px;
+  cursor: pointer;
+}
+.userpdiv1div1div2 {
+  width: 95%;
+  height: 70%;
+  /* border: 2px solid yellow; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: scroll;
+}
+.userpdiv1div1div2div1 {
+  /* border: 2px solid red; */
+  width: 88%;
+}
+.userpdiv1div1div2div1 > p {
+  color: rgb(198, 195, 195);
+  padding-top: 1vh;
+}
+.userpdiv1div1div2div1 > p > span {
+  color: white;
+}
+.userpdiv1div2 {
+  /* border: 2px solid green; */
+  width: 25%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.userpdiv1div2div1 {
+  width: 50%;
+  aspect-ratio: 1/1;
+  /* border: 2px solid green; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #e9eff6;
+}
+.userpdiv1div2div1 > img {
+  border-radius: 50%;
+  width: 85%;
+  aspect-ratio: 1/1;
+  /* border: 2px solid blue; */
+}
+.userpdiv2 {
+  /* border: 2px solid red; */
+  width: 95%;
+  height: 65%;
+  display: flex;
+  justify-content: space-between;
+  color: black;
+}
+
+.userdiv2div1 {
+  width: 40%;
+  /* border: 2px solid blue; */
+}
+
+.userdiv2div2 {
+  width: 30%;
+  /* border: 2px solid blue; */
+}
+
+.userdiv2div3 {
+  width: 30%;
+  /* border: 2px solid blue; */
+}
+.userdiv2div1 > h2 {
+  /* border: 2px solid blue; */
+  height: 10%;
+}
+.userdiv2div1div1 {
+  height: 90%;
+  /* border: 2px solid blue; */
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.userdiv2div1div1div1 {
+  width: 90%;
+  padding: 2vh;
+  /* border: 2px solid yellowgreen; */
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15), 0 2px 2px rgba(0, 0, 0, 0.15),
+    0 4px 4px rgba(0, 0, 0, 0.15), 0 8px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: black;
+  background-color: white;
+  margin-top: 1.5vh;
+  border-radius: 1vw;
+}
+.userdiv2div1div1div1 > div {
+  /* border: 2px solid blue; */
+  font-size: 0.9vw;
+  width: 70%;
+}
+.userdiv2div1div1div1 > span {
+  /* border: 2px solid red; */
+  width: 25%;
+  text-align: center;
+  padding: 1vh;
+  background-color: red;
+  color: black;
+  border-radius: 2vh;
+}

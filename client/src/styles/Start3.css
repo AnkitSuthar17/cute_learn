@@ -1,0 +1,222 @@
+.Start3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #efe1e1;
+  padding: 2rem 0;
+  /* border: 2px solid blue; */
+}
+
+.Start3div2 {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 2px solid red; */
+}
+
+.Start3div2div.scrolled > div {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.Start3div2div.scrolled > div > h2 {
+  opacity: 1;
+}
+
+.Start3div2div1,
+.Start3div2div2,
+.Start3div2div3,
+.Start3div2div4 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  /* margin-bottom: 2rem; */
+  /* border: 2px solid red; */
+}
+
+.Start3div2div1 > div,
+.Start3div2div2 > div,
+.Start3div2div3 > div,
+.Start3div2div4 > div {
+  width: 50%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* border: 2px solid black; */
+}
+
+.Start3div2div1 > div > img,
+.Start3div2div2 > div > img,
+.Start3div2div3 > div > img,
+.Start3div2div4 > div > img {
+  width: 80%;
+  border-radius: 1vw 1vw;
+  max-width: 100%;
+  padding: 0.5vw 0.5vw;
+  aspect-ratio: 5/3;
+}
+
+.Start3div2div1 > div > h2,
+.Start3div2div2 > div > h2,
+.Start3div2div3 > div > h2,
+.Start3div2div4 > div > h2 {
+  width: 100%;
+  font-size: 2.5vw;
+  font-weight: bolder;
+  height: 20%;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  color: #333;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  overflow-wrap: break-word;
+  /* border: 2px solid red; */
+  text-align: left;
+  align-content: center;
+  margin-left: 1vw;
+}
+
+.Start3div2div1 > div > p,
+.Start3div2div2 > div > p,
+.Start3div2div3 > div > p,
+.Start3div2div4 > div > p {
+  width: 100%;
+  height: 80%;
+  font-size: 1.5vw;
+  margin-top: 0;
+  color: #555;
+  line-height: 1.5;
+  text-align: justify;
+  text-justify: inter-word;
+  overflow-wrap: break-word;
+  margin-left: 1vw;
+}
+
+.lShapedDashedLine {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.dashedLineAnimation {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: dash 4s linear forwards;
+}
+
+@media screen and (max-width: 512px) {
+  .Start3 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #efe1e1;
+    padding: 0px;
+    /* border: 2px solid blue; */
+  }
+
+  .Start3div2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 2px solid red; */
+  }
+
+  .Start3div2div1,
+  .Start3div2div3 {
+    width: 100%;
+    /* border: 2px solid blue; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .Start3div2div2,
+  .Start3div2div4 {
+    width: 100%;
+    /* border: 2px solid blue; */
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+  }
+
+  .Start3div2div1 > div,
+  .Start3div2div3 > div {
+    /* border: 2px solid green; */
+    width: 100%;
+    height: 34vh;
+    margin-top: 1vh;
+  }
+  .Start3div2div2 > div,
+  .Start3div2div4 > div {
+    /* border: 2px solid green; */
+    width: 100%;
+    height: 34vh;
+    margin-top: 1vh;
+  }
+
+  .Start3div2div1 > div > img,
+  .Start3div2div2 > div > img,
+  .Start3div2div3 > div > img,
+  .Start3div2div4 > div > img {
+    width: 95%;
+    border-radius: 1vw 1vw;
+    max-width: 100%;
+    aspect-ratio: 7/5;
+  }
+  .Start3div2div1 > div > h2,
+  .Start3div2div2 > div > h2,
+  .Start3div2div3 > div > h2,
+  .Start3div2div4 > div > h2 {
+    /* border: 2px solid red; */
+
+    font-size: 11vw;
+    text-align: center;
+    align-content: center;
+    margin-top: 0vh;
+    margin-bottom: 1vh;
+  }
+
+  .Start3div2div1 > div > p,
+  .Start3div2div2 > div > p,
+  .Start3div2div3 > div > p,
+  .Start3div2div4 > div > p {
+    /* border: 2px solid green; */
+    font-size: 5vw;
+    margin-top: 1vh;
+    text-wrap: break-word;
+    padding: 0vh 4vw;
+    width: 95%;
+    margin-bottom: 7vh;
+    height: 30vh;
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .dashedLineAnimation {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: dash 4s linear forwards;
+  }
+
+  .lShapedDashedLine {
+    display: none;
+  }
+}

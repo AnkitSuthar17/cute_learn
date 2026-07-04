@@ -1,0 +1,105 @@
+.publicprofilepopup {
+  position: absolute;
+  top: 15vh;
+  width: 32%;
+  height: 75vh;
+  /* border: 2px solid green; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: white;
+  border-radius: 1vw 1vw;
+  backdrop-filter: none;
+  /* z-index: 1001; */
+  opacity: 10;
+  cursor: pointer;
+}
+.publicprofilepopupdiv1 {
+  height: 30%;
+  /* border: 2px solid blue; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 1vw 1vw;
+}
+.publicprofilepopupdiv1div1 {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.publicprofilepopupdiv1div2 {
+  width: 95%;
+  display: flex;
+  justify-content: space-around;
+}
+.publicprofilepopupdiv1div3 {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.publicprofilepopupdiv1div3 > hr {
+  width: 48%;
+}
+.publicprofilepopupdiv1div4 {
+  width: 94%;
+  /* border: 2px solid green; */
+}
+.publicprofilepopupdiv1div4 > input {
+  width: 100%;
+  padding: 2vh;
+  outline: none;
+  border: none;
+  background-color: rgba(248, 243, 243, 0.893);
+  border-radius: 1vh 1vh;
+}
+
+.publicprofilepopupdiv2 {
+  /* border: 2px solid red; */
+  min-height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.publicprofilepopupdiv2div1 {
+  /* border: 2px solid blue; */
+  width: 90%;
+  margin-top: 1vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
+}
+.publicprofilepopupdiv2div1div1 {
+  width: 60%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* border: 2px solid green; */
+}
+.publicprofilepopupdiv2div1div1 > img {
+  width: 15%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+.publicprofilepopupdiv2div1div1 > div {
+  margin-left: 1vw;
+}
+.publicprofilepopupdiv2div1div1 > div > h3,
+p {
+  line-height: normal;
+  font-size: 1vw;
+}
+
+.publicprofilepopupdiv2div1 > button {
+  width: 30%;
+  padding: 1.4vh;
+  font-size: 1vw;
+  background-color: green;
+  border-radius: 1vh 1vh;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}

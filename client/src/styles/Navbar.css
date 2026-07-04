@@ -1,0 +1,296 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+.Navbarmaindiv {
+  /* border: 2px solid blue; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10vh;
+  position: fixed;
+  top: 0px;
+  width: 100vw;
+  background-color: #efe1e1;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  z-index: 2;
+}
+
+.navlogo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 2vw;
+  width: 20vw;
+}
+
+.navlogo > img {
+  margin-top: 7px;
+  width: 18vw;
+}
+
+.navbuttons {
+  display: flex;
+  width: 50vw;
+  justify-content: space-between;
+  margin-right: 3vw;
+  align-items: center;
+}
+
+.btn {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+}
+.navlinks {
+  font-size: 1.2vw;
+  text-decoration: none;
+  color: black;
+}
+.navlinks.active {
+  color: red;
+}
+.navlinks:not(.active):hover {
+  color: blue;
+  /* transform: scale(1.3); */
+}
+
+.signuplink {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+  border-radius: 5vh;
+  background-color: transparent;
+  padding: 0.5vh;
+  text-decoration: none;
+  /* border: 2px solid blue; */
+}
+.Profileimgmaindiv {
+  display: flex;
+  justify-content: space-evenly;
+  width: 20%;
+  /* background-color: red; */
+  align-items: center;
+  height: 10vh;
+}
+.Profileimgmaindiv>a {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.navnotification,
+.navprofile,
+.navdashboard {
+  width: 30%;
+  align-self: 1/1;
+  position: relative;
+  /* border: 2px solid blue; */
+}
+
+.navdashboard > img {
+  width: 80%;
+  /* border-radius: 50%; */
+  /* border: 2px solid red; */
+  aspect-ratio: 1/1;
+  object-fit: fill;
+}
+
+.navnotification > img,
+.navprofile > img {
+  width: 80%;
+  border-radius: 50%;
+  /* border: 2px solid red; */
+  aspect-ratio: 1/1;
+  object-fit: fill;
+}
+.navprofile > img {
+  border:#000000 1.5px solid;
+}
+.navnotification > img,
+.navdashboard > img {
+  width: 60%;
+}
+.signuplink > button {
+  cursor: pointer;
+  border: 2px solid #d61e3f;
+  color: #efe1e1;
+  font-size: 1vw;
+  width: 99%;
+  padding: 2vh;
+  background-color: #d61e3f;
+  border-radius: 5vh;
+  font-weight: BOLD;
+  margin: 0px;
+}
+.signuplink > img {
+  width: 30%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: 1px solid red;
+}
+.signuplink > button:hover {
+  background-color: #d61e3f;
+  border: 2pt solid #d61e3f;
+  box-shadow: rgba(243, 17, 17, 0.35) 0px 5px 3px;
+  /* background-color: yellow; */
+}
+.signuplink:hover {
+  border:none;
+ 
+  /* border: 2px solid red; */
+}
+
+/* Define the keyframes for the border color animation */
+/* @keyframes borderColorChange {
+  0% {
+    border-color: #fd5b2e;
+  }
+  50% {
+    border-color: blue;
+  }
+  100% {
+    border-color: green;
+  }
+} */
+
+.navoptions,
+.barcross {
+  display: none;
+  /* border: 2px solid green; */
+}
+
+@media screen and (max-width: 512px) {
+  .navoptions {
+    display: flex;
+    justify-content: center;
+    width: 10%;
+    z-index: 2;
+    color: white;
+  }
+  .barcross {
+    display: flex;
+    justify-content: center;
+    width: 19%;
+    z-index: 2;
+    font-size: 6vw;
+  }
+  .navbarcrossicon {
+    /* border: 2px solid blue; */
+    position: relative;
+    bottom: 2.5vh;
+  }
+  .navbuttons {
+    display: none;
+  }
+
+  .navlogo {
+    /* border: 2px solid green; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55vw;
+  }
+
+  .navlogo > img {
+    width: 100%;
+  }
+
+  .navbuttons.show {
+    /* border: 2px solid yellow; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0vh;
+    right: 0px;
+    width: 50vw;
+    margin-right: 0px;
+    max-height: 50vh;
+    padding-bottom: 1vh;
+    background-color: #071b33;
+    transition: 5s cubic-bezier(0.36, -0.01, 0, 0.77);
+  }
+  .navbuttons.cross {
+    color: white;
+    /* position: absolute; */
+    margin-bottom: 2vh;
+  }
+  .btn {
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    align-items: center;
+    height: 25vh;
+    margin-top: 3vh;
+  }
+
+  a.navlinks {
+    font-size: 4vw;
+    color: white;
+  }
+
+  .signuplink {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    border-radius: 5vh;
+    background-color: transparent;
+    /* padding: 0.5vh; */
+    text-decoration: none;
+  }
+
+  .signuplink > button {
+    cursor: pointer;
+    border: 2px solid #d61e3f;
+    color: #efe1e1;
+    font-size: 4vw;
+    width: 99%;
+    /* padding: 2vh; */
+    background-color: #d61e3f;
+    border-radius: 5vh;
+    font-weight: BOLD;
+  }
+  .signuplink > button:hover {
+    background-color: #d61e3f;
+    border: 2pt solid #d61e3f;
+    /* background-color: yellow; */
+  }
+  .signuplink:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+  }
+
+  .Profileimgmaindiv {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /* background-color: rgb(172, 133, 133); */
+    /* border: 2px solid green; */
+    align-items: center;
+    height: 10vh;
+  }
+  .navnotification,
+  .navprofile {
+    width: 50%;
+    align-self: 1/1;
+    /* border: 2px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .navnotification > img,
+  .navprofile > img {
+    width: 40%;
+    border-radius: 50%;
+    /* border: 2px solid red; */
+    aspect-ratio: 1/1;
+    object-fit: fill;
+  }
+  .navnotification > img {
+    color: black;
+    background-color: lightcoral;
+  }
+}

@@ -1,0 +1,71 @@
+.search-bar-container {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    margin:0.5%
+  }
+  
+  .search-bar-input {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .admin-user-photo-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .admin-user-photo {
+    width: 40px; 
+    aspect-ratio: 1/1;
+    border-radius: 50%; 
+    object-fit: cover; 
+  }
+
+  .delete-button {
+    background: none;
+    color: rgb(189, 38, 38);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .delete-button:hover {
+    color: rgb(121, 31, 31);
+  }
+  
+  .assign-task-button {
+    background: none;
+    color: rgb(67, 192, 150);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .assign-task-button:hover {
+    color: rgb(22, 99, 85);
+  }
+
+  .make-admin-button{
+    background: none;
+    color: rgb(67, 148, 192);
+    border: none;
+    cursor: pointer;
+  }
+
+  .make-admin-button:hover {
+    color: rgb(32, 79, 116);
+  }
+
+  .remove-admin-button{
+    background: none;
+    color: rgb(210, 172, 49);
+    border: none;
+    cursor: pointer;
+  }
+
+  .remove-admin-button:hover {
+    color: rgb(151, 145, 34);
+  }
+

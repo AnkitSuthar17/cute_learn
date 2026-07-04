@@ -1,0 +1,62 @@
+body.buy-page {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200vh;
+}
+
+.buy-page .overlay-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buy-page .login-wrapper {
+  display: flex;
+  width: 80%;
+  max-width: 900px;
+  height: 70vh;
+  max-height: 600px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.buy-page .left-section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+
+
+.buy-page .right-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 50px;
+  background-color: #efe1e1;
+}
+
+.buy-text-content {
+  width: 85%;
+  margin-top: 65px;
+  border: 2px solid red;
+  height: 80%;
+}
+

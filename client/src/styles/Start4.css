@@ -1,0 +1,90 @@
+.Start4 {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #efe1e1;
+  /* border: 2px solid red; */
+}
+.Start4div1 {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  font-size: 3.5vw;
+  /* border: 2px solid green; */
+}
+
+.Start4div2 {
+  min-height: 60%;
+  display: flex;
+  justify-content: center;
+  /* border: 2px solid red; */
+}
+
+.Start4div2div1 {
+  width: 50%;
+  height: fit-content;
+  font-size: 1.5vw;
+  padding: 1.2vw;
+}
+
+.Start4div2div2 {
+  width: 40%;
+  max-height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Start4div2div2 > img {
+  width: 50%;
+  height: 75%;
+  aspect-ratio: 2/7;
+  border-radius: 60%;
+}
+
+@media screen and (max-width: 512px) {
+  .Start4 {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #efe1e1;
+    /* border: 2px solid red; */
+  }
+  .Start4div1 {
+    width: 100%;
+    margin-left: 4vw;
+    font-size: 8vw;
+  }
+
+  .Start4div2 {
+    height: fit-content;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    /* border: 2px solid red; */
+  }
+
+  .Start4div2div1 {
+    width: 95%;
+    height: fit-content;
+    font-size: 5vw;
+    align-content: center;
+    padding: 1.2vw;
+    /* border: 2px solid red; */
+  }
+
+  .Start4div2div2 {
+    width: 100%;
+  }
+  .Start4div2div2 > img {
+    width: 50%;
+    height: 75%;
+    aspect-ratio: 2/7;
+    border-radius: 60%;
+  }
+}

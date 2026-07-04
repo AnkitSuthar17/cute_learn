@@ -1,0 +1,72 @@
+.course-table-container {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .header {
+    background-color: #800000;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .course-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .course-table th,
+  .course-table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  .course-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .fee-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .extra-buy-now-button {
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #800000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .buy-now-button:hover {
+    background-color: #b30000;
+  }
+  
+  .particulars {
+    margin-top: 20px;
+  }
+  
+  .particulars ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .particulars li {
+    margin-bottom: 10px;
+  }
+  
+  .footer {
+    background-color: #800000;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+  }
+  

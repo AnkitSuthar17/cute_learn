@@ -1,0 +1,171 @@
+.Navprofilemaindiv {
+  width: 22%;
+  height: 45vh;
+  /* border: 2px solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  border-radius: 1.2vw 1.2vw;
+  position: absolute;
+  right: 6%;
+  top: 100%;
+}
+.Navprofilemaindivcross {
+  width: 90%;
+  height: 4%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1%;
+  cursor: pointer;
+}
+.Navprofilemaindivdiv1 {
+  height: 40%;
+  /* border: 2px solid green; */
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.Navprofilemaindivdiv1div1 {
+  width: 30%;
+  aspect-ratio: 1/1;
+  /* border: 2px solid blue; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.Navprofilemaindivdiv1div2 {
+  width: 60%;
+  /* border: 2px solid blue; */
+}
+
+.Navprofilemaindivdiv1div1 > img {
+  width: 80%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  /* border: 2px solid red; */
+}
+.profileediticon {
+  position: absolute;
+  bottom: 11%;
+  right: 11%;
+  color: #b11d37;
+  width: 13%;
+  height: 13%;
+  cursor: pointer;
+  /* font-size: 20%; */
+}
+.Navprofilemaindivdiv2 {
+  width: 100%;
+  height: 45%;
+  /* border: 2px solid green; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.Navprofilemaindivdiv2 > button {
+  padding: 2vh;
+  border-radius: 1vw 1vw;
+  background-color: red;
+  width: 85%;
+  background-color: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+  font-size: 1vw;
+  font-weight: 500;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.Navprofilemaindivdiv2 > div {
+  /* border: 2px solid green; */
+  width: 85%;
+  display: flex;
+  justify-content: space-between;
+}
+.Navprofilemaindivdiv2 > div > button {
+  width: 48%;
+  padding: 4%;
+  border-radius: 0.6vw 0.6vw;
+  background-color: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1vw;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.Navprofilemaindivdiv2 > div > button:hover,
+.Navprofilemaindivdiv2 > button:hover {
+  background-color: #d61e3f;
+  color: white;
+}
+@media screen and (max-width: 510px) {
+  .Navprofilemaindiv {
+    width: 92%;
+    height: 60vh;
+    position: fixed;
+    right: 4%;
+    left: 4%;
+    top: 10vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+  .Navprofilemaindivdiv1 {
+    height: 30%;
+    margin-bottom: 1vh;
+  }
+  .Navprofilemaindivdiv1div1 {
+    width: 30%;
+  }
+  .Navprofilemaindivdiv1div2 {
+    width: 60%;
+    font-size: 5vw;
+  }
+
+  .Navprofilemaindivdiv1div1 > img {
+    width: 80%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    /* border: 2px solid red; */
+  }
+
+  .Navprofilemaindivdiv2 {
+    width: 100%;
+    height: 50%;
+  }
+  .Navprofilemaindivdiv2 > button {
+    padding: 2vh;
+    border-radius: 2vw 2vw;
+    background-color: #d61e3f;
+    color: white;
+    font-size: 5vw;
+    width: 90%;
+  }
+  .Navprofilemaindivdiv2 > div {
+    /* border: 2px solid green; */
+    width: 90%;
+  }
+  .Navprofilemaindivdiv2 > div > button {
+    width: 48%;
+    padding: 4%;
+    border-radius: 1vw 1vw;
+    background-color: #d61e3f;
+    color: white;
+    font-size: 5vw;
+  }
+
+  .Navprofilemaindivdiv2 > div > button:hover,
+  .Navprofilemaindivdiv2 > button:hover {
+    background-color: #d61e3f;
+    color: white;
+  }
+}
+
+.crossicon:hover {
+  color: #d61e3f;
+  transform: scale(1.2);
+  transition: all 0.2s ease-in-out;
+}

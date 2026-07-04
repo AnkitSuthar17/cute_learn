@@ -1,0 +1,18 @@
+.planetry-scroll-container {
+    height: 100vh;
+    overflow-y: hidden;
+    position: relative;
+  }
+  
+  .planetry-scroll-content {
+    height: 100%;
+    width:auto;
+    position: relative;
+    display: flex;
+  }
+  
+  .planetry-element {
+    width: 100px;
+    height: 100px;
+    
+  }

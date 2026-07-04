@@ -1,0 +1,139 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+
+  "main": "electron/main.js",
+
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+
+    "electron": "electron .",
+    "desktop": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "dist": "npm run build && electron-builder"
+  },
+
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/free-brands-svg-icons": "^7.2.0",
+    "@fortawesome/free-regular-svg-icons": "^7.2.0",
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/react-fontawesome": "^3.3.0",
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/google-calendar": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/react": "^6.1.20",
+    "@google/generative-ai": "^0.24.1",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/lab": "^9.0.0-beta.2",
+    "@mui/material": "^9.0.0",
+    "@mui/x-data-grid": "^9.0.1",
+    "@mui/x-date-pickers": "^9.0.0",
+    "@react-oauth/google": "^0.13.5",
+    "@syncfusion/ej2-react-pdfviewer": "^33.1.47",
+    "axios": "^1.16.1",
+    "browser-image-compression": "^2.0.2",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.20",
+    "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
+    "framer-motion": "^12.38.0",
+    "fullcalendar": "^6.1.20",
+    "gapi-script": "^1.2.0",
+    "gsap": "^3.14.2",
+    "html-react-parser": "^6.0.1",
+    "htmlparser": "^1.7.7",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.7",
+    "lottie": "^0.0.1",
+    "lottie-react": "^2.4.1",
+    "lottie-web": "^5.13.0",
+    "moment": "^2.30.1",
+    "nodemon": "^3.1.14",
+    "papaparse": "^5.5.3",
+    "pica": "^9.0.1",
+    "quill": "^2.0.3",
+    "quill-image-resize-module": "^3.0.0",
+    "react": "^19.2.5",
+    "react-big-calendar": "^1.19.4",
+    "react-calendar": "^6.0.1",
+    "react-confetti": "^6.4.0",
+    "react-dom": "^19.2.5",
+    "react-draggable": "^4.5.0",
+    "react-google-calendar-api": "^2.3.0",
+    "react-lottie": "^1.2.10",
+    "react-microsoft-login": "^2.0.1",
+    "react-modal": "^3.16.3",
+    "react-model": "^4.3.1",
+    "react-p5": "^1.4.1",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^7.14.0",
+    "react-xarrows": "^2.0.2",
+    "socket.io-client": "^4.8.3",
+    "stylis": "^4.3.6",
+    "stylis-plugin-rtl": "^2.1.1",
+    "xlsx": "^0.18.5"
+  },
+
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-lottie": "^1.2.10",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.27",
+    "concurrently": "^10.0.3",
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9.0.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "lucide-react": "^1.8.0",
+    "postcss": "^8.5.9",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.8",
+    "vite-plugin-pwa": "^1.2.0",
+    "wait-on": "^9.0.10"
+  },
+
+  "overrides": {
+    "react-quill": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    },
+    "vite-plugin-pwa": {
+      "vite": "$vite"
+    }
+  },
+
+  "description": "CuTe Learning Application",
+  "author": "",
+  "license": "ISC",
+
+  "build": {
+    "appId": "com.cutelearning.app",
+    "productName": "CuTe Learning",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+}

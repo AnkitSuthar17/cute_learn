@@ -1,0 +1,119 @@
+
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  background-color: #f5f5f5;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #eee;
+  font-weight: bold;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+.upload-button {
+  display: inline-block;
+  padding: 8px 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  color: #333;
+  font-weight: bold;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.Submit,
+.Reset {
+  padding: 12px 25px;
+  background-color: #4CAF50; /* Green */
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.Reset {
+  background-color: #ccc; /* Gray */
+}
+
+/* Specific label styling */
+label[for="Name"],
+label[for="Date_of_birth"],
+label[for="Gender"],
+label[for="Address"],
+label[for="Address1"],
+label[for="Email_id"],
+label[for="Phone_No"],
+label[for="Alternate_Phone_No"],
+label[for="Subject_Choosen0"],
+label[for="Subject_Choosen1"],
+label[for="Subject_Choosen2"],
+label[for="Subject_Choosen3"],
+label[for="Subject_Choosen4"],
+label[for="Subject_Choosen5"],
+label[for="Class"],
+label[for="Semester"],
+label[for="SchoolName_CollegeName"],
+label[for="Fathers_Name"],
+label[for="Mothers_Name"],
+label[for="Fathers_Occupation"],
+label[for="Mothers_Occupation"] {
+  color: #777;
+}
+
+.form-container {
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: 20px; 
+}

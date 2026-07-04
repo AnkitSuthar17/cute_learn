@@ -1,0 +1,72 @@
+.settings-panel {
+  position: relative;
+  height: 95vh;
+  /* aspect-ratio: 1/1; */
+  margin: 10px;
+  padding: 20px;
+  /* background-color: hsl(0, 0%, 100%); */
+}
+
+.settings-panel > h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.setting-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding: 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.setting-tabs > li {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 2px solid transparent;
+}
+
+.setting-tabs > li.active {
+  border-bottom: 2px solid #007bff;
+}
+
+.setting-tab-content {
+  /* padding: 20px; */
+  /* border: 1px solid #ccc;
+  border-radius: 5px; */
+  /* color: #fff; */
+}
+
+.setting-form-group {
+  margin-bottom: 15px;
+}
+
+.setting-my-h4 {
+  margin-bottom: 15px;
+}
+
+.setting-function-section {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.setting-caution-note {
+  /* color: rgb(0, 0, 0); */
+}
+
+.setting-delete-account-section {
+  margin-top: 20px;
+}
+
+.setting-delete-account-text {
+  color: red;
+  cursor: pointer;
+}
+
+.setting-delete-account-text:hover {
+  text-decoration: underline;
+}

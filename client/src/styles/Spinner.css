@@ -1,0 +1,35 @@
+
+.ios-spinner {
+    display: inline-block;
+    width: 20px; /* Reduced width */
+    height: 20px; /* Reduced height */
+  }
+  
+  .ios-spinner:after {
+    content: " ";
+    display: block;
+    width: 16px; /* Reduced width */
+    height: 16px; /* Reduced height */
+    margin: 2px; /* Adjusted margin */
+    border-radius: 50%;
+    border: 2px solid #fff; /* Reduced border width */
+    border-color: #000 transparent #000 transparent;
+    animation: ios-spinner 1.2s linear infinite;
+  }
+  
+  @keyframes ios-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+  }
+  

@@ -1,0 +1,138 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.mainDashboard {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  /* border: 2px solid green; */
+}
+
+.myphotoedit {
+  position: absolute;
+  bottom: 25%;
+  right: 18%;
+  color: #b11d37;
+  width: 10%;
+  height: 10%;
+  cursor: pointer;
+  rotate: 3.5deg;
+  /* font-size: 20%; */
+}
+
+/* Left Section Styles */
+.leftSectionDashboard {
+  width: 15%;
+  /* background-color: #f0f0f0; */
+  display: flex;
+  flex-direction: column;
+  /* padding: 20px; */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  /* border: 2px solid red; */
+}
+
+.leftSectionDashboard img {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.codrudivision {
+  width: 100%;
+  /* border: 2px solid pink; */
+  margin-top: 2vh;
+  margin-left: 0.5vw;
+}
+
+.photoDashboard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 30px;
+  width: 100%;
+}
+
+.drawerContent {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.drawerContent .MuiListItem-root {
+  padding-left: 1vw;
+}
+
+.drawerContent .MuiListItemIcon-root {
+  min-width: 40px;
+}
+
+/* Right Section Styles */
+.rightSectionDashboard {
+  height: 100%;
+  width: 85%;
+  overflow-y: auto; /* Enables vertical scrolling */
+  max-height: 100vh; /* Limits height to the viewport */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Custom scrollbar colors */
+}
+
+.rightSectionDashboard1 {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+  height: 100%;
+  width: 100%;
+  /* border: 2px solid red; */
+}
+
+.calenderSectionDashboard {
+  display: flex;
+  justify-content: space-evenly;
+  /* align-items: center; */
+  height: 80vh;
+  width: 70%;
+
+}
+
+.eventSectionDashboard {
+  height: 100%;  
+  width: 40%;
+  border: 1px solid grey;
+  border-radius: 5%;
+  overflow-y: auto;
+}
+
+
+/* Event Form and Calendar styles remain the same */
+
+.photoDashboard > img {
+  width: 70%;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+}
+
+.welcomeMessage {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.welcomeMessage > h2 {
+  font-size: 1.5rem;
+  color: #b11d37;
+}
+
+.theme-switch{
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  color: #000;
+  /* background-color: #fff; */
+}

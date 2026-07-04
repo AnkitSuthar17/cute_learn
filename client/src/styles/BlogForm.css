@@ -1,0 +1,512 @@
+.Blogformmaindiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #efe1e1;
+}
+.Blogformmaindiv > h1{
+  margin-top: 10px;
+  margin-bottom: 5vh;
+} 
+.Blogformmaindiv > form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: fit-content;
+  background-color: #efe1e1;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 5px;
+}
+.Reactquill .ql-container .ql-editor {
+  height: 40vh; /* Ensure a minimum height for mobile */
+}
+
+.Blogformmaindiv > form > input {
+  width: 95%;
+  padding: 1%;
+  border-radius: 1vh;
+  margin: 6vh 1vw;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  border: none; 
+  background-color: #efe1e1;
+  border-width: 0px;
+  border-style: none;
+  border-color: #efe1e1;
+  font-size: x-large;
+}
+.Blogformmaindiv > form > input:focus {
+  outline: none;
+  border: none;
+}
+.BlogDoneButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+}
+.BlogDone {
+  width: 100%;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  /* margin-bottom: 2vh; */
+  padding: 2vh;
+  font-size: 1.5vw;
+  font-style: bold;
+  font-weight: 600;
+  border-radius: 1vh;
+  background-color: brown;
+  border: none;
+  cursor: pointer;
+  color:#efe1e1;
+}
+
+.media-previews {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.image-preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 80%;
+  margin: 10px 0;
+}
+
+.image-preview img {
+  width: 50%;
+  aspect-ratio: 7 / 4;
+}
+
+.image-preview div {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.image-preview textarea,
+.video-preview textarea {
+  width: 90%;
+  resize: none;
+  background-color: transparent;
+  height: 30vh;
+  color: black;
+}
+
+.image-preview div button {
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  width: 50%;
+  padding: 1vh;
+  background-color: thistle;
+  font-size: 1vw;
+  border-radius: 1vh;
+  border: none;
+  font-weight: bold;
+}
+/* .ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+  float: none;
+} */
+@media screen and (max-width: 512px) {
+  .Blogformmaindiv {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #efe1e1;
+    /* border: 2px solid red; */
+  }
+
+  .Blogformmaindiv > form {
+    width: 100%;
+    min-height: 62vh;
+    box-shadow: none;
+    margin-top: 2vh;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+
+  /* .Blogformmaindiv > form > div {
+    width: 100%;
+    min-height: 40vh;
+    margin-top: 0px;
+  } */
+
+  .Reactquill .ql-toolbar {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    height: 20vh;
+  }
+
+  .Blogformmaindiv > form > input {
+    width: 80%;
+    padding: 4%;
+    border-radius: 1vh;
+    margin: 6vh 1vw;
+    font-weight: bold;
+  }
+  .BlogDoneButton{
+    margin: auto;
+    margin-top: 0;
+    width: 30%;
+  }
+  .BlogDone {
+    width: 100%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    /* margin-bottom: 2vh; */
+    padding: 2vh;
+    font-size: 3vw;
+    border-radius: 1vh;
+    background-color: brown;
+    border: none;
+    cursor: pointer;
+  }
+
+  .media-previews {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .image-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 80%;
+    margin: 10px 0;
+  }
+
+  .image-preview img {
+    width: 50%;
+    aspect-ratio: 7 / 4;
+  }
+
+  .image-preview div {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .image-preview textarea,
+  .video-preview textarea {
+    width: 90%;
+    resize: none;
+    background-color: transparent;
+    height: 30vh;
+    color: black;
+  }
+
+  .image-preview div button {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    width: 50%;
+    padding: 1vh;
+    background-color: thistle;
+    font-size: 1vw;
+    border-radius: 1vh;
+    border: none;
+    font-weight: bold;
+  }
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before {
+  content: "10px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="11px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="11px"]::before {
+  content: "11px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
+  content: "12px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="13px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="13px"]::before {
+  content: "13px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
+  content: "14px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
+  content: "16px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
+  content: "18px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
+  content: "20px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before {
+  content: "24px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="32px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32px"]::before {
+  content: "32px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="42px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="42px"]::before {
+  content: "42px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="54px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="54px"]::before {
+  content: "54px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="68px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="68px"]::before {
+  content: "68px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="84px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="84px"]::before {
+  content: "84px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="98px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="98px"]::before {
+  content: "98px";
+}
+
+/* Quill editor custom fonts */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Arial"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Arial"]::before {
+  content: "Arial";
+  font-family: "Arial", sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Verdana"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Verdana"]::before {
+  content: "Verdana";
+  font-family: "Verdana", sans-serif;
+}
+
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-label[data-value="Times New Roman"]::before,
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-item[data-value="Times New Roman"]::before {
+  content: "Times New Roman";
+  font-family: "Times New Roman", serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Courier New"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Courier New"]::before {
+  content: "Courier New";
+  font-family: "Courier New", monospace;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="cursive"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="cursive"]::before {
+  content: "Cursive";
+  font-family: "cursive";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Tahoma"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Tahoma"]::before {
+  content: "Tahoma";
+  font-family: "Tahoma", sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Georgia"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Georgia"]::before {
+  content: "Georgia";
+  font-family: "Georgia", serif;
+}
+
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-label[data-value="Comic Sans MS"]::before,
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-item[data-value="Comic Sans MS"]::before {
+  content: "Comic Sans MS";
+  font-family: "Comic Sans MS", cursive;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Impact"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Impact"]::before {
+  content: "Impact";
+  font-family: "Impact", sans-serif;
+}
+
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-label[data-value="Lucida Sans Unicode"]::before,
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-item[data-value="Lucida Sans Unicode"]::before {
+  content: "Lucida Sans Unicode";
+  font-family: "Lucida Sans Unicode", sans-serif;
+}
+
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-label[data-value="Palatino Linotype"]::before,
+.ql-snow
+  .ql-picker.ql-font
+  .ql-picker-item[data-value="Palatino Linotype"]::before {
+  content: "Palatino Linotype";
+  font-family: "Palatino Linotype", serif;
+}
+
+/* Apply font-family to editor content */
+.ql-editor {
+  font-family: "Arial", "Verdana", "Times New Roman", "Courier New", "cursive",
+    "Tahoma", "Georgia", "Comic Sans MS", "Impact", "Lucida Sans Unicode",
+    "Palatino Linotype", sans-serif;
+}
+
+/* Additional CSS to apply selected font family to editor content */
+.ql-font-Arial {
+  font-family: "Arial", sans-serif;
+}
+
+.ql-font-Verdana {
+  font-family: "Verdana", sans-serif;
+}
+
+.ql-font-Times\ New\ Roman {
+  font-family: "Times New Roman", serif;
+}
+
+.ql-font-Courier\ New {
+  font-family: "Courier New", monospace;
+}
+
+.ql-font-cursive {
+  font-family: "cursive";
+}
+
+.ql-font-Tahoma {
+  font-family: "Tahoma", sans-serif;
+}
+
+.ql-font-Georgia {
+  font-family: "Georgia", serif;
+}
+
+.ql-font-Comic\ Sans\ MS {
+  font-family: "Comic Sans MS", cursive;
+}
+
+.ql-font-Impact {
+  font-family: "Impact", sans-serif;
+}
+
+.ql-font-Lucida\ Sans\ Unicode {
+  font-family: "Lucida Sans Unicode", sans-serif;
+}
+
+.ql-font-Palatino\ Linotype {
+  font-family: "Palatino Linotype", serif;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px; /* Adjust the max-width as needed */
+}
+.ql-snow .ql-picker.ql-font .ql-picker-list {
+  width: 5vw; /* Adjust the max-width as needed */
+}
+
+/* Style the images within the ReactQuill editor */
+/* Increase specificity to override conflicting styles */
+.ql-editor img {
+  min-width: 100%;
+
+  display: block;
+  margin: 2vh auto;
+}
+.ql-snow .ql-picker {
+  margin: 10px;
+}
+.ql-container.ql-snow {
+  border-left: none;
+  border-right: none;
+}
+.ql-toolbar.ql-snow {
+  border-left: none;
+  border-right: none;
+}
+
+/* Overlay to darken the background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 999; /* Ensure it appears above other elements */
+}
+
+/* Pop-up styling */
+.popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d61e3f;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  z-index: 1000; /* Ensure it appears above the overlay */
+  animation: fadeOut 3s forwards;
+}
+
+/* Fade-out animation for the pop-up */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

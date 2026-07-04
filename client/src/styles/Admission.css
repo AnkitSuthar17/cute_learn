@@ -1,0 +1,129 @@
+.admission-form {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  border: 2px solid #d3d3d3;
+  background: white;
+}
+
+.header {
+  text-align: center;
+  background: #b30000;
+  color: white;
+  padding: 10px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.form-container {
+  padding: 20px;
+  position: relative;
+}
+
+.form-container h2 {
+  text-align: center;
+}
+
+/* Upload Photo Section */
+.photo-box-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.photo-box {
+  width: 120px;
+  height: 150px;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-btn {
+  margin-top: 5px;
+  font-size: 12px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* Form Styling */
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 600px;
+}
+
+.form-group label {
+  flex: 1;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  flex: 3;
+  padding: 5px 0;
+  border: none;
+  border-bottom: 1px solid #000;
+  background: transparent;
+  outline: none;
+}
+
+.form-group textarea {
+  height: 50px;
+  resize: none;
+}
+
+.subject-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding-left: 75px;
+}
+
+/* DOB Specific Styling */
+.dob-container {
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.dob-input {
+  width: 50px;
+  margin: 0 5px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.declaration {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.footer {
+  text-align: center;
+  background: #b30000;
+  color: white;
+  padding: 10px;
+  margin-top: 20px;
+}

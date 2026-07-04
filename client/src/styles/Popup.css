@@ -1,0 +1,108 @@
+*{
+    margin:0%;
+    padding: 0%;
+  } */
+
+ .box2 {
+  border: 2px solid black;
+  height: 600px;
+  width: 1250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 53px;
+  margin-left: 150px;
+  border-radius: 25px;
+  background-image: url("src/assets/background.jpg");
+}
+
+.box2 h2 {
+  color: #f2f2f2;
+  position: absolute;
+  left: 40%;
+  bottom: 80%;
+  font-size: 50px;
+}
+
+.image1 img {
+  width: 25%;
+  height: 85%;
+  position: absolute;
+  top: 10px;
+  left: 300px;
+  transition: transform 0.2s;
+}
+.image1 img:hover {
+  transform: scale(1.15);
+}
+.image1 h3 {
+  color: #f2f2f2;
+  position: absolute;
+  left: 28%;
+  bottom: 20%;
+  font-size: 33px;
+}
+
+.image2 img {
+  width: 23%;
+  height: 65%;
+  position: absolute;
+  top: 99px;
+  right: 300px;
+  transition: transform 0.2s;
+}
+
+.image2 img:hover {
+  transform: scale(1.15);
+}
+.image2 h3 {
+  color: #f2f2f2;
+  position: absolute;
+  right: 28%;
+  bottom: 20%;
+  font-size: 33px;
+}
+
+.username {
+  font-family: inter;
+  font-size: 17px;
+  position: absolute;
+  top: 35%;
+  left: 60%;
+}
+
+.username1 {
+  margin-top: 1%;
+  margin-right: 8%;
+  padding: 8px;
+  width: 400px;
+  border: 2px solid #fc0505;
+  border-radius: 15px;
+  background-color: #f2f2f2;
+}
+
+.username1 input {
+  width: 400px;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 16px;
+}
+
+.username2 {
+  margin-top: 1%;
+  margin-right: 8%;
+  padding: 8px;
+  width: 400px;
+  border: 2px solid #fc0505;
+  border-radius: 15px;
+  background-color: #f2f2f2;
+}
+
+.username2 input {
+  width: 400px;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 16px;
+}

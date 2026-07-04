@@ -1,0 +1,24 @@
+.share-options {
+  /* border: 2px solid blue; */
+  width: 10vw;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 1vh;
+  left: 2vw;
+  padding: 2vh;
+}
+
+.share-options > button {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.share-options button img {
+  width: 2vw; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  /* background-color: transparent; */
+  background: none;
+  cursor: pointer;
+}

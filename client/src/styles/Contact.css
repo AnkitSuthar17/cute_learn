@@ -1,0 +1,367 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px transparent;
+  -webkit-text-fill-color: #000;
+  transition: background-color 5000s ease-in-out 0s;
+}
+.cont_main {
+  display: flex;
+  /* border:1px solid #4e1a28; */
+  width: 60%;
+  height: 100%;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0px 10px 20px 10px rgba(0, 0, 0, 0.1);
+}
+.cont_main_div1 {
+  width: 60%;
+  height: 100%;
+  margin: 1px;
+}
+.cont_main_div1 span {
+  font-size: 20px;
+  color: #4e1a28;
+  position: relative;
+  top: 3%;
+  left: 30%;
+}
+.cont_main_div2 {
+  width: 40%;
+  height: 100%;
+  background-color: #4e1a28;
+  color: #efe1e1;
+  border-radius: 4px;
+
+  /* margin: 1px;  */
+}
+.cont_page {
+  border: 2px solid #efe1e1;
+  width: auto;
+  height: auto;
+  font-size: 10px;
+  background-color: #efe1e1;
+  margin-top: 10vh;
+  padding-top: 5%;
+  padding-bottom: 5%;
+}
+
+.cont_page h1 {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-weight: 300;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  font-size: 40px;
+}
+.cont_page h1 span {
+  color: #d61e3f;
+}
+
+.cont_form-container {
+  position: relative;
+  top: 20%;
+  max-width: 500px;
+  margin: 5%;
+  padding: 5px;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.cont_form-group {
+  margin-bottom: 15px; /* Add spacing between form elements */
+}
+
+.cont_form-group label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.phone-container input,
+.contact-country-code,
+.cont_form-group input,
+.cont_form-group textarea {
+  color: #590404;
+  width: 100%; /* Ensure inputs take up the full width of the container */
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+  box-sizing: border-box; /* Include padding in the width */
+  box-shadow: #590404 0px 0px 3px;
+  font-size: 14px;
+}
+.phone-container input:focus,
+.contact-country-code:focus,
+.cont_form-group input:focus,
+.cont_form-group textarea:focus {
+  outline: none;
+  border: none;
+}
+
+.cont_form-group textarea {
+  font-family: 'Poppins', sans-serif;
+  resize: vertical;
+  height: 100px;
+  resize: none;
+}
+.cont_form-group > button {
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  width: fit-content; /* Initial width */
+  height: auto;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  margin-left:0;
+  padding: 1.5vh;
+  font-size: 14px;
+  border-radius: 1vh;
+  background-color: brown;
+  border: none;
+  cursor: pointer;
+  color: white; /* Ensure text is visible */
+  position: relative; /* Required for the pseudo-element */
+  overflow: hidden; /* Prevent overflow of the icon */
+  text-align: left; /* Center the text */
+}
+
+.cont_form-group button:hover {
+  background-color: #d61e3f;
+  box-shadow: #590404 0px 0px 3px;
+}
+.cont_all {
+  margin: 8%;
+}
+.cont_all_detail h2 {
+  color: #efe1e1;
+  font-size: 24px;
+  margin-top: 5%;
+  margin-left: 20%;
+}
+.cont_all_detail p {
+  margin-top: 4%;
+  margin-left: 10px;
+  font-size: 13px;
+}
+.cont_all_detail h4 {
+  margin-top: 13px;
+  margin-left: 10px;
+  font-size: 20px;
+}
+.cont_all_detail h5 {
+  margin-top: 5%;
+  margin-left: 10px;
+  font-size: 100%;
+  font-style: normal;
+}
+
+.send-message-btn {
+  display: flex; /* Use flexbox to align text and icon */
+  align-items: center; /* Vertically center the text and icon */
+  justify-content: flex-start; /* Align text to the left */
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  width: fit-content; /* Adjust width to fit content */
+  height: auto;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  padding: 1.5vh;
+  font-size: 14px;
+  border-radius: 1vh;
+  background-color: brown;
+  border: none;
+  cursor: pointer;
+  color: white; /* Ensure text is visible */
+  position: relative;
+  overflow: hidden; /* Prevent overflow of the icon */
+}
+
+.send-message-text {
+  transition: all 0.3s ease;
+  margin-right: 0px; /* Add spacing between text and icon */
+  text-align: left; /* Align text to the left */
+  width: fit-content;
+}
+
+.send-message-icon {
+  scale:0;
+  font-size: 12px; /* Initial size of the icon */
+  opacity: 0; /* Initially hidden */
+  transition: all 0.3s ease; /* Smooth transition for size and opacity */
+  width: 0px;
+}
+.send-message-btn:hover .send-message-icon {
+  scale:1;
+  opacity: 1; /* Make the icon visible on hover */
+  width: 12px;
+}
+.send-message-btn:hover .send-message-text {
+  margin-right: 10px;
+}
+
+.send-message-btn:hover {
+  background-color: #d61e3f; /* Change background color on hover */
+  box-shadow: #590404 0px 0px 3px; /* Add shadow on hover */
+}
+.fa-phone{
+  transform: scaleX(-1);
+}
+.clk {
+  fill:#efe1e1;
+  width: 20px;
+  transition: transform 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+  
+}
+.clk:hover {
+  fill: #d61e3f; /* Change color on hover */
+  transform: scale(1.2); /* Slightly enlarge the icon on hover */
+}
+
+/* Make the parent containers flex */
+.cont_all_phone,
+.cont_all_email,
+.cont_all_address,
+.cont_all_hours {
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  gap: 10px; /* Add spacing between the icon and text */
+  margin-bottom: 10px; /* Add spacing between rows */
+}
+
+/* Style the icons */
+.phone-icon,
+.email-icon,
+.address-icon,
+.hours-icon {
+  font-size: 20px; /* Adjust icon size */
+  color: #efe1e1; /* Icon color */
+  transition: transform 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+.phone-icon:hover,
+.email-icon:hover,
+.address-icon:hover {
+  color: #d61e3f; /* Change color on hover */
+  transform: scale(1.2); /* Slightly enlarge the icon on hover */
+}
+
+/* Style the text */
+.phone-text,
+.email-text,
+.address-text,
+.hours-text {
+  font-size: 16px; /* Adjust text size */
+  color: #efe1e1; /* Text color */
+  line-height: 1.5; /* Improve readability */
+  align-items: center;
+  padding : 2px ;
+}
+
+.cont_all_text {
+  /* margin-left: 10px;
+  margin-right: 10px; */
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-size: 18px;
+  color: #efe1e1;
+  line-height: 1.5; /* Improve readability */
+  align-items: center;
+}
+.cont_all_text > p {
+  font-size: 18px;
+  line-height: 1.2; /* Improve readability */
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #efe1e1; /* Light gray color for the line */
+  margin: 20px 0; /* Add spacing above and below the line */
+}
+
+/* Flex container for social media icons */
+.cont_all_socials {
+  display: flex;
+  justify-content: center; /* Center the icons horizontally */
+  align-items: center; /* Center the icons vertically */
+  gap: 15%; /* Add spacing between the icons */
+  margin-top: 20px; /* Add spacing above the social icons */
+}
+
+/* General styles for social media icons */
+.cont_all_socials a {
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit the color from the parent element */
+}
+
+/* General styles for all social icons */
+.social-icon {
+  font-size: 24px; /* Adjust icon size */
+  color: #efe1e1; /* Icon color */
+  transition: transform 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Hover effect for social icons */
+
+.social-icon:hover {
+  transform: scale(1.2); /* Slightly enlarge the icon on hover */
+  color: #d61e3f; /* Change color on hover */
+}
+.cont_all_phone a,
+.cont_all_email a,
+.cont_all_address a,
+.cont_all_hours a,
+.cont_all_socials a {
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit the color from the parent element */
+
+}
+
+.contact-country-code {
+  width: 25%; /* Adjust width of the dropdown */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.contact-country-code:focus {
+  outline: none;
+  box-shadow: #d61e3f 0 0 3px;
+}
+
+.phone-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add spacing between the dropdown and input */
+}
+
+#phn {
+  width: 75%; /* Adjust width of the phone input */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+  .cont_main {
+    flex-direction: column; /* Stack the divs vertically */
+    width: 90%; /* Adjust width for smaller screens */
+    height: auto; /* Allow height to adjust dynamically */
+  }
+
+  .cont_main_div1,
+  .cont_main_div2 {
+    width: 100%; /* Make each div take full width */
+    margin: 0; /* Remove margins */
+    height: auto; /* Allow height to adjust dynamically */
+  }
+
+  .cont_main_div2 {
+    margin-top: 20px; /* Add spacing between the two divs */
+  }
+}
