@@ -3,21 +3,17 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-
   "main": "electron/main.js",
-
   "scripts": {
     "start": "npm run dev",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-
     "electron": "electron .",
     "desktop": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
     "dist": "npm run build && electron-builder"
   },
-
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -82,7 +78,6 @@
     "stylis-plugin-rtl": "^2.1.1",
     "xlsx": "^0.18.5"
   },
-
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.2",
     "@types/papaparse": "^5.5.2",
@@ -106,7 +101,6 @@
     "vite-plugin-pwa": "^1.2.0",
     "wait-on": "^9.0.10"
   },
-
   "overrides": {
     "react-quill": {
       "react": "$react",
@@ -116,24 +110,65 @@
       "vite": "$vite"
     }
   },
-
   "description": "CuTe Learning Application",
   "author": "",
   "license": "ISC",
-
   "build": {
     "appId": "com.cutelearning.app",
     "productName": "CuTe Learning",
     "directories": {
-      "output": "release"
+      "output": "release",
+      "buildResources": "build"
     },
     "files": [
       "dist/**/*",
       "electron/**/*",
       "package.json"
     ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
+    "asar": true,
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon-.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CuTe Learning"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "build/Icon.icns",
+      "category": "public.app-category.education"
+    },
+    "dmg": {
+      "backgroundColor": "#FFFFFF",
+      "iconSize": 120
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "build"
     }
   }
 }
