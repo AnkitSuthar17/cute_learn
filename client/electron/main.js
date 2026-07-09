@@ -28,7 +28,9 @@ function createWindow() {
     autoHideMenuBar: true,
 
     titleBarStyle:
-      process.platform === "darwin" ? "hiddenInset" : "default",
+      process.platform === "darwin"
+        ? "hiddenInset"
+        : "default",
 
     titleBarOverlay:
       process.platform === "win32"
@@ -39,104 +41,188 @@ function createWindow() {
           }
         : false,
 
-    // Uncomment after adding icon.ico/icon.icns
-    // icon: path.join(__dirname, "../build/icon.png"),
-
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
-  // Hide Menu
   Menu.setApplicationMenu(null);
   mainWindow.setMenuBarVisibility(false);
 
   if (!app.isPackaged) {
     mainWindow.loadURL("http://localhost:5173");
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+    mainWindow.loadFile(
+      path.join(__dirname, "../dist/index.html")
+    );
   }
 
-  // Open external links in browser
+  // Handle links
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+
+    // Google Login
+    if (
+      url.includes("accounts.google.com") ||
+      url.includes("googleusercontent.com")
+    ) {
+      shell.openExternal(url);
+      return { action: "deny" };
+    }
+
+    // Microsoft Login
+    if (
+      url.includes("login.microsoftonline.com")
+    ) {
+      shell.openExternal(url);
+      return { action: "deny" };
+    }
+
+    // GitHub Login
+    if (
+      url.includes("github.com/login")
+    ) {
+      shell.openExternal(url);
+      return { action: "deny" };
+    }
+
+    // Any external website
+    if (!url.includes("curiousteamlearning.com")) {
+      shell.openExternal(url);
+      return { action: "deny" };
+    }
+
+    // Internal website pages
+    mainWindow.loadURL(url);
+
+    return {
+      action: "deny",
+    };
+  });
+
+  // Prevent navigation outside app
+  mainWindow.webContents.on("will-navigate", (event, url) => {
+
+    if (url.includes("curiousteamlearning.com")) {
+      return;
+    }
+
+    event.preventDefault();
     shell.openExternal(url);
-    return { action: "deny" };
+
   });
 
   // Disable Reload & DevTools
-  mainWindow.webContents.on("before-input-event", (event, input) => {
-    const key = input.key.toUpperCase();
+  mainWindow.webContents.on(
+    "before-input-event",
+    (event, input) => {
 
-    // Reload
-    if (
-      key === "F5" ||
-      (input.control && key === "R") ||
-      (input.meta && key === "R")
-    ) {
-      event.preventDefault();
-    }
+      const key = input.key.toUpperCase();
 
-    // DevTools
-    if (
-      key === "F12" ||
-      (input.control && input.shift && key === "I") ||
-      (input.meta && input.alt && key === "I")
-    ) {
-      event.preventDefault();
+      if (
+        key === "F5" ||
+        (input.control && key === "R") ||
+        (input.meta && key === "R")
+      ) {
+        event.preventDefault();
+      }
+
+      if (
+        key === "F12" ||
+        (input.control &&
+          input.shift &&
+          key === "I") ||
+        (input.meta &&
+          input.alt &&
+          key === "I")
+      ) {
+        event.preventDefault();
+      }
     }
-  });
+  );
 
   // Disable Right Click
-  mainWindow.webContents.on("context-menu", (e) => {
-    e.preventDefault();
-  });
+  mainWindow.webContents.on(
+    "context-menu",
+    (event) => {
+      event.preventDefault();
+    }
+  );
 
-  // Offline Detection
-  mainWindow.webContents.on("did-finish-load", () => {
-    mainWindow.webContents.executeJavaScript(`
-      window.addEventListener("offline", () => {
-        document.body.innerHTML = \`
-          <div style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            font-family:Arial;
-            background:#ffffff;
-            flex-direction:column;
-            text-align:center;
-            padding:20px;
-          ">
-            <h1 style="color:#ff7b00;">
-              No Internet Connection
-            </h1>
+  // Offline Screen
+  mainWindow.webContents.on(
+    "did-finish-load",
+    () => {
 
-            <p style="font-size:18px;color:#666;">
-              Please check your internet connection and try again.
-            </p>
-          </div>
-        \`;
-      });
-    `);
-  });
+      mainWindow.webContents.executeJavaScript(`
+
+        function showOfflinePage(){
+
+          document.body.innerHTML = \`
+            <div style="
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              flex-direction:column;
+              height:100vh;
+              font-family:Arial;
+              background:#ffffff;
+              text-align:center;
+            ">
+
+              <h1 style="
+                color:#ed7f23;
+                margin-bottom:20px;
+              ">
+                No Internet Connection
+              </h1>
+
+              <p style="
+                color:#666;
+                font-size:18px;
+              ">
+                Please check your internet connection and try again.
+              </p>
+
+            </div>
+          \`;
+
+        }
+
+        if(!navigator.onLine){
+          showOfflinePage();
+        }
+
+        window.addEventListener("offline",showOfflinePage);
+
+      `);
+
+    }
+  );
 }
 
 app.whenReady().then(() => {
-  // Force Light Theme
+
   nativeTheme.themeSource = "light";
 
   createWindow();
 
   app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
+
+    if (
+      BrowserWindow.getAllWindows().length === 0
+    ) {
       createWindow();
     }
+
   });
+
 });
 
 app.on("window-all-closed", () => {
+
   if (process.platform !== "darwin") {
     app.quit();
   }
+
 });
