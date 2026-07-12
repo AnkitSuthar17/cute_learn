@@ -161,7 +161,7 @@
       "category": "public.app-category.education"
     },
     "dmg": {
-      "backgroundColor": "#FFFFFF",
+      "backgroundColor": "white",
       "iconSize": 120
     },
     "linux": {
