@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
@@ -14,27 +17,29 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout Source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Show Repository
-        shell: bash
-        run: |
-         pwd
-          ls -R
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Install Client Dependencies
+      - name: Install dependencies
         working-directory: client
         run: npm install
 
-      - name: Build Electron App
+      - name: Build app
         working-directory: client
         run: npm run dist
 
-      - name: Skip Upload
-        run: echo "Skipping artifact upload"
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        if: matrix.os == 'macos-latest'
+        with:
+          tag_name: latest
+          name: CuTe Learning Latest
+          files: |
+            client/release/*.exe
+            client/release/*.dmg
+            client/release/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
