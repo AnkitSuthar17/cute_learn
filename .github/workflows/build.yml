@@ -41,6 +41,5 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             client/release/*.dmg
-            client/release/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
