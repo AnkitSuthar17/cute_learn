@@ -466,9 +466,15 @@ app.put("/calendar-events/:id", authenticate, async (req, res) => {
 });
 
 app.get("/auth/google", (req, res) => {
+  // Pass platform + returnTo through OAuth state as JSON
+  const platform = req.query.platform || "web";
+  const returnTo = req.query.returnTo || "/";
+  const stateData = JSON.stringify({ platform, returnTo });
+
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"],
+    state: Buffer.from(stateData).toString("base64"),
   });
   res.redirect(url);
 });
@@ -576,7 +582,21 @@ app.post("/calendar-events", authenticate, async (req, res) => {
 
 app.get("/auth/google/callback", async (req, res) => {
   const code = req.query.code;
-  const returnTo = req.query.state || "/"; 
+
+  // Decode state to get platform and returnTo
+  let platform = "web";
+  let returnTo = "/";
+  try {
+    const stateRaw = req.query.state;
+    if (stateRaw) {
+      const parsed = JSON.parse(Buffer.from(stateRaw, "base64").toString("utf8"));
+      platform = parsed.platform || "web";
+      returnTo = parsed.returnTo || "/";
+    }
+  } catch (e) {
+    // If state is not valid JSON, treat as plain returnTo for backwards compat
+    returnTo = req.query.state || "/";
+  }
 
   if (!code) return res.status(400).json({ error: "Code missing from Google" });
 
@@ -653,6 +673,40 @@ app.get("/auth/google/callback", async (req, res) => {
       expiresIn: "14d",
     });
 
+    // Desktop app: redirect to custom deep link protocol
+    if (platform === "desktop") {
+      let deepLink = `cutelearn://auth?token=${token}`;
+      if (isFirstTime) {
+        deepLink += "&new=true";
+      }
+      // Show a nice "redirect" page that auto-opens the deep link
+      return res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Redirecting to CuTe Learning...</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f8fafc; color: #333; }
+            .card { text-align: center; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; }
+            h2 { color: #1765a4; margin-bottom: 0.5rem; }
+            p { color: #666; margin-bottom: 1.5rem; }
+            a { display: inline-block; padding: 12px 32px; background: #1765a4; color: white; border-radius: 12px; text-decoration: none; font-weight: 600; }
+            a:hover { background: #125a93; }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h2>✅ Login Successful!</h2>
+            <p>Redirecting you back to the CuTe Learning app...</p>
+            <a href="${deepLink}">Open CuTe Learning App</a>
+          </div>
+          <script>window.location.href = "${deepLink}";</script>
+        </body>
+        </html>
+      `);
+    }
+
+    // Web: existing redirect flow
     const baseURL = process.env.FRONTEND_URL.replace(/\/$/, ""); 
     const safeReturnTo = returnTo.startsWith("/") ? returnTo : `/${returnTo}`;
     const finalUrl = new URL(safeReturnTo, baseURL);
