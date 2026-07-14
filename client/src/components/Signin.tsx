@@ -174,10 +174,22 @@ function Signin({ setUserData }: SigninProps) {
             <div className="relative flex justify-center text-sm"><span className="px-4 bg-white text-gray-400">Or</span></div>
           </div>
 
-          {/* 🚨 THE NEW BIG GOOGLE BUTTON */}
+          {/* 🚨 GOOGLE BUTTON — VS Code style for Desktop, normal for Web */}
           <button 
             type="button"
-            onClick={() => window.location.href = `${import.meta.env.VITE_API}auth/google`}
+            onClick={() => {
+              const api = import.meta.env.VITE_API;
+              // @ts-ignore — electronAPI injected by preload.js
+              if (window.electronAPI?.isElectron) {
+                // Desktop: open in system browser with platform=desktop
+                const authUrl = `${api}auth/google?platform=desktop`;
+                // @ts-ignore
+                window.electronAPI.openExternal(authUrl);
+              } else {
+                // Web: existing redirect flow
+                window.location.href = `${api}auth/google`;
+              }
+            }}
             className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm active:scale-[0.98]"
           >
             <img src={GoogleIcon} alt="Google" className="w-6 h-6" />
