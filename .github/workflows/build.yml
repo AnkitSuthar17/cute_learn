@@ -31,12 +31,14 @@ jobs:
         working-directory: client
         run: npm run dist
 
-      - name: Publish Release
-        uses: softprops/action-gh-release@v2
+     - name: Publish Release
         if: matrix.os == 'macos-latest'
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: CuTe Learning Latest
+          generate_release_notes: true
+          fail_on_unmatched_files: true
           files: |
             client/release/*.exe
             client/release/*.dmg
