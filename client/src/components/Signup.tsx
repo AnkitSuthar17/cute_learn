@@ -328,21 +328,11 @@ function Signup() {
             <div className="relative flex justify-center text-xs font-bold uppercase tracking-widest"><span className="px-4 bg-white text-gray-400">Or continue with</span></div>
           </div>
 
-          {/* 🚀 GOOGLE BUTTON — VS Code style for Desktop, normal for Web */}
+          {/* 🚀 NEW: Clean Full-Width Google Button */}
           <button 
             onClick={() => {
-              const api = import.meta.env.VITE_API;
               const returnTo = sessionStorage.getItem("redirectPath") || "/";
-              // @ts-ignore — electronAPI injected by preload.js
-              if (window.electronAPI?.isElectron) {
-                // Desktop: open in system browser with platform=desktop
-                const authUrl = `${api}auth/google?platform=desktop&returnTo=${returnTo}`;
-                // @ts-ignore
-                window.electronAPI.openExternal(authUrl);
-              } else {
-                // Web: existing redirect flow
-                window.location.href = `${api}auth/google?returnTo=${returnTo}`;
-              }
+              window.location.href = `${import.meta.env.VITE_API}auth/google?returnTo=${returnTo}`;
             }}
             className="w-full flex items-center justify-center gap-3 py-3.5 border-2 border-slate-100 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-95"
           >

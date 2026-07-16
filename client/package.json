@@ -116,10 +116,6 @@
   "build": {
     "appId": "com.cutelearning.app",
     "productName": "CuTe Learning",
-    "protocols": {
-      "name": "CuTe Learning Auth",
-      "schemes": ["cutelearn"]
-    },
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -149,9 +145,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "CuTe Learning",
-      "perMachine": false,
-      "include": "build/installer.nsh"
+      "shortcutName": "CuTe Learning"
     },
     "mac": {
       "target": [
@@ -174,8 +168,7 @@
       "target": [
         "AppImage"
       ],
-      "icon": "build",
-      "mimeTypes": ["x-scheme-handler/cutelearn"]
+      "icon": "build"
     }
   }
 }
