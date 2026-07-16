@@ -4,13 +4,32 @@ import {
   Menu,
   nativeTheme,
   shell,
+  protocol,
+  net,
 } from "electron";
 
 import path from "path";
-import { fileURLToPath } from "url";
+import fs from "fs";
+import { fileURLToPath, pathToFileURL } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// ==========================================
+// CUSTOM PROTOCOL FOR SPA ROUTING
+// Must be called BEFORE app.ready
+// Fixes: React Router 404 when loading from file://
+// ==========================================
+protocol.registerSchemesAsPrivileged([{
+  scheme: "cuteapp",
+  privileges: {
+    standard: true,
+    secure: true,
+    supportFetchAPI: true,
+    corsEnabled: true,
+    stream: true,
+  },
+}]);
 
 let mainWindow;
 
@@ -18,7 +37,7 @@ let mainWindow;
 const OFFLINE_HTML = '<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;height:100vh;font-family:Arial;background:#ffffff;text-align:center;"><h1 style="color:#ed7f23;margin-bottom:20px;">No Internet Connection</h1><p style="color:#666;font-size:18px;">Please check your internet connection and try again.</p></div>';
 
 // ==========================================
-// GOOGLE AUTH POPUP
+// GOOGLE AUTH POPUP (shows inside app)
 // ==========================================
 function openGoogleAuthPopup(authUrl) {
   const popup = new BrowserWindow({
@@ -26,32 +45,37 @@ function openGoogleAuthPopup(authUrl) {
     height: 700,
     parent: mainWindow,
     modal: true,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
     title: "Sign in with Google",
     autoHideMenuBar: true,
     backgroundColor: "#ffffff",
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      partition: "persist:google-auth",
     },
   });
 
   popup.setMenuBarVisibility(false);
   popup.loadURL(authUrl);
 
-  // Check if URL contains our auth token
+  // Check if URL contains our auth token (from server redirect)
   function tryExtractToken(url) {
     try {
       if (!url || !url.includes("token=")) return false;
+      // Only match our frontend URL with token
+      if (!url.includes("curiousteamlearning.com") && !url.includes("localhost")) return false;
 
       const parsed = new URL(url);
       const token = parsed.searchParams.get("token");
       if (!token) return false;
 
       const isNew = parsed.searchParams.get("new");
-
-      // Inject token into main window
       const nav = isNew === "true" ? "/?new=true" : "/";
+
+      // Inject token into main window and navigate
       mainWindow.webContents.executeJavaScript(
         "localStorage.setItem('jwtoken','" + token + "');" +
         "window.location.href='" + nav + "';"
@@ -64,7 +88,7 @@ function openGoogleAuthPopup(authUrl) {
     }
   }
 
-  // Catch the redirect back from server with token
+  // Catch token in redirect (renderer-initiated navigation)
   popup.webContents.on("will-navigate", (event, url) => {
     if (url.includes("token=")) {
       event.preventDefault();
@@ -72,11 +96,11 @@ function openGoogleAuthPopup(authUrl) {
     }
   });
 
+  // Catch token after navigation completes (HTTP redirects)
   popup.webContents.on("did-navigate", (_event, url) => {
     tryExtractToken(url);
   });
 
-  // Also handle close without login
   popup.on("closed", () => {
     // User closed popup without completing login — do nothing
   });
@@ -118,18 +142,18 @@ function createWindow() {
     },
   });
 
+  // Hide menu bar but don't null it (null removes keyboard shortcuts)
   Menu.setApplicationMenu(null);
   mainWindow.setMenuBarVisibility(false);
 
   if (!app.isPackaged) {
     mainWindow.loadURL("http://localhost:5173");
   } else {
-    mainWindow.loadFile(
-      path.join(__dirname, "../dist/index.html")
-    );
+    // Use custom protocol so React Router SPA routing works
+    mainWindow.loadURL("cuteapp://./index.html");
   }
 
-  // Handle links (window.open)
+  // Handle window.open links
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
 
     // Google Login
@@ -142,17 +166,13 @@ function createWindow() {
     }
 
     // Microsoft Login
-    if (
-      url.includes("login.microsoftonline.com")
-    ) {
+    if (url.includes("login.microsoftonline.com")) {
       shell.openExternal(url);
       return { action: "deny" };
     }
 
     // GitHub Login
-    if (
-      url.includes("github.com/login")
-    ) {
+    if (url.includes("github.com/login")) {
       shell.openExternal(url);
       return { action: "deny" };
     }
@@ -165,26 +185,18 @@ function createWindow() {
 
     // Internal website pages
     mainWindow.loadURL(url);
-
-    return {
-      action: "deny",
-    };
+    return { action: "deny" };
   });
 
   // Handle navigation — intercept Google auth, open in popup
   mainWindow.webContents.on("will-navigate", (event, url) => {
 
     // Allow internal navigation
-    if (url.includes("curiousteamlearning.com")) {
-      return;
-    }
+    if (url.includes("curiousteamlearning.com")) return;
+    if (url.includes("localhost")) return;
+    if (url.startsWith("cuteapp://")) return;
 
-    // Allow localhost navigation (dev mode)
-    if (url.includes("localhost")) {
-      return;
-    }
-
-    // Google auth — open in popup window instead of navigating away
+    // Google auth — open in popup window
     if (url.includes("/auth/google")) {
       event.preventDefault();
       openGoogleAuthPopup(url);
@@ -198,9 +210,10 @@ function createWindow() {
   });
 
   // ==========================================
-  // KEYBOARD SHORTCUTS
-  // Back = Alt+Left, Reload = F5 / Ctrl+R (invisible, no UI)
-  // Only block: DevTools (F12 / Ctrl+Shift+I)
+  // KEYBOARD SHORTCUTS (invisible, no UI)
+  // F5 / Ctrl+R = Reload
+  // Alt+Left = Back
+  // F12 / Ctrl+Shift+I = Blocked (DevTools)
   // ==========================================
   mainWindow.webContents.on(
     "before-input-event",
@@ -211,21 +224,29 @@ function createWindow() {
       // Block DevTools
       if (
         key === "F12" ||
-        (input.control &&
-          input.shift &&
-          key === "I") ||
-        (input.meta &&
-          input.alt &&
-          key === "I")
+        (input.control && input.shift && key === "I") ||
+        (input.meta && input.alt && key === "I")
       ) {
         event.preventDefault();
+        return;
       }
 
-      // Back navigation: Alt + Left Arrow
+      // Reload: F5 or Ctrl+R / Cmd+R
+      if (
+        key === "F5" ||
+        (input.control && key === "R") ||
+        (input.meta && key === "R")
+      ) {
+        mainWindow.webContents.reload();
+        return;
+      }
+
+      // Back: Alt + Left Arrow
       if (input.alt && key === "ARROWLEFT") {
         if (mainWindow.webContents.canGoBack()) {
           mainWindow.webContents.goBack();
         }
+        return;
       }
     }
   );
@@ -267,24 +288,55 @@ app.whenReady().then(() => {
 
   nativeTheme.themeSource = "light";
 
+  // ==========================================
+  // REGISTER PROTOCOL HANDLER (SPA fallback)
+  // Any unknown route → serves index.html
+  // ==========================================
+  protocol.handle("cuteapp", (request) => {
+    const url = new URL(request.url);
+    let pathname = decodeURIComponent(url.pathname);
+
+    // Default to index.html
+    if (pathname === "/" || pathname === "") {
+      pathname = "/index.html";
+    }
+
+    const distPath = path.join(__dirname, "..", "dist");
+    const filePath = path.join(distPath, pathname);
+
+    // Security: ensure path is within dist
+    const normalizedFilePath = path.resolve(filePath);
+    const normalizedDistPath = path.resolve(distPath);
+    if (!normalizedFilePath.startsWith(normalizedDistPath)) {
+      return new Response("Forbidden", { status: 403 });
+    }
+
+    // If file exists, serve it directly
+    try {
+      if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+        return net.fetch(pathToFileURL(filePath).toString());
+      }
+    } catch (e) {
+      // Fall through to index.html
+    }
+
+    // SPA fallback: serve index.html for any unmatched route
+    // This is what makes React Router work in the packaged app
+    return net.fetch(pathToFileURL(path.join(distPath, "index.html")).toString());
+  });
+
   createWindow();
 
   app.on("activate", () => {
-
-    if (
-      BrowserWindow.getAllWindows().length === 0
-    ) {
+    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
-
   });
 
 });
 
 app.on("window-all-closed", () => {
-
   if (process.platform !== "darwin") {
     app.quit();
   }
-
 });
