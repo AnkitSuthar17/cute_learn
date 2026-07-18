@@ -4,7 +4,6 @@ import {
   Menu,
   nativeTheme,
   shell,
-  session,
 } from "electron";
 
 import path from "path";
@@ -24,7 +23,7 @@ const OFFLINE_HTML = '<div style="display:flex;align-items:center;justify-conten
 
 // ==========================================
 // LOCAL HTTP SERVER
-// Serves dist files + handles Google auth callback
+// Serves dist files reliably from ASAR + handles Google auth callback
 // ==========================================
 function startLocalServer() {
   return new Promise((resolve, reject) => {
@@ -66,15 +65,6 @@ function startLocalServer() {
 
       let filePath = path.join(distPath, pathname);
 
-      // Security: prevent path traversal
-      const normalizedFile = path.resolve(filePath);
-      const normalizedDist = path.resolve(distPath);
-      if (!normalizedFile.startsWith(normalizedDist)) {
-        res.writeHead(403);
-        res.end("Forbidden");
-        return;
-      }
-
       // SPA fallback: if file doesn't exist, serve index.html
       let isFile = false;
       try {
@@ -115,13 +105,14 @@ function startLocalServer() {
       const contentType = mimeTypes[ext] || "application/octet-stream";
 
       try {
-        const stat = fs.statSync(filePath);
+        // Read file synchronously to guarantee clean delivery from app.asar on Windows
+        const content = fs.readFileSync(filePath);
         res.writeHead(200, {
           "Content-Type": contentType,
-          "Content-Length": stat.size,
+          "Content-Length": content.length,
           "Cache-Control": ext === ".html" ? "no-cache" : "max-age=31536000",
         });
-        fs.createReadStream(filePath).pipe(res);
+        res.end(content);
       } catch (e) {
         res.writeHead(404);
         res.end("Not found");
@@ -222,23 +213,30 @@ function createWindow() {
   });
 
   // ==========================================
+  // MOUSE BACK / FORWARD BUTTONS (Hardware buttons)
+  // ==========================================
+  mainWindow.on("app-command", (event, command) => {
+    if (command === "browser-backward") {
+      if (mainWindow.webContents.canGoBack()) {
+        mainWindow.webContents.goBack();
+      }
+      mainWindow.webContents.executeJavaScript("window.history.back()").catch(() => {});
+    } else if (command === "browser-forward") {
+      if (mainWindow.webContents.canGoForward()) {
+        mainWindow.webContents.goForward();
+      }
+      mainWindow.webContents.executeJavaScript("window.history.forward()").catch(() => {});
+    }
+  });
+
+  // ==========================================
   // KEYBOARD SHORTCUTS (invisible, no UI)
   // F5 / Ctrl+R = Reload
-  // Alt+Left   = Back
-  // F12        = Blocked (DevTools)
+  // Alt+Left / Backspace = Back
   // ==========================================
   mainWindow.webContents.on("before-input-event", (event, input) => {
+    if (input.type !== "keyDown") return;
     const key = input.key.toUpperCase();
-
-    // Block DevTools
-    if (
-      key === "F12" ||
-      (input.control && input.shift && key === "I") ||
-      (input.meta && input.alt && key === "I")
-    ) {
-      event.preventDefault();
-      return;
-    }
 
     // Reload: F5 or Ctrl+R / Cmd+R
     if (
@@ -255,7 +253,19 @@ function createWindow() {
       if (mainWindow.webContents.canGoBack()) {
         mainWindow.webContents.goBack();
       }
+      mainWindow.webContents.executeJavaScript("window.history.back()").catch(() => {});
       return;
+    }
+
+    // Back: Backspace (only if not typing in input/textarea)
+    if (key === "BACKSPACE" && !input.control && !input.alt && !input.meta) {
+      mainWindow.webContents.executeJavaScript(
+        "(function() {" +
+        "  const tag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toUpperCase() : '';" +
+        "  const isEditable = document.activeElement && (document.activeElement.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA');" +
+        "  if (!isEditable) { window.history.back(); }" +
+        "})()"
+      ).catch(() => {});
     }
   });
 
