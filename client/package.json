@@ -138,7 +138,7 @@
           ]
         }
       ],
-      "icon": "build/icon-.ico"
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,

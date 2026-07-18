@@ -4,105 +4,137 @@ import {
   Menu,
   nativeTheme,
   shell,
-  protocol,
-  net,
+  session,
 } from "electron";
 
 import path from "path";
 import fs from "fs";
-import { fileURLToPath, pathToFileURL } from "url";
+import http from "http";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ==========================================
-// CUSTOM PROTOCOL FOR SPA ROUTING
-// Must be called BEFORE app.ready
-// Fixes: React Router 404 when loading from file://
-// ==========================================
-protocol.registerSchemesAsPrivileged([{
-  scheme: "cuteapp",
-  privileges: {
-    standard: true,
-    secure: true,
-    supportFetchAPI: true,
-    corsEnabled: true,
-    stream: true,
-  },
-}]);
-
 let mainWindow;
+let localServer;
+let localPort;
 
 // Offline page HTML
 const OFFLINE_HTML = '<div style="display:flex;align-items:center;justify-content:center;flex-direction:column;height:100vh;font-family:Arial;background:#ffffff;text-align:center;"><h1 style="color:#ed7f23;margin-bottom:20px;">No Internet Connection</h1><p style="color:#666;font-size:18px;">Please check your internet connection and try again.</p></div>';
 
 // ==========================================
-// GOOGLE AUTH POPUP (shows inside app)
+// LOCAL HTTP SERVER
+// Serves dist files + handles Google auth callback
 // ==========================================
-function openGoogleAuthPopup(authUrl) {
-  const popup = new BrowserWindow({
-    width: 500,
-    height: 700,
-    parent: mainWindow,
-    modal: true,
-    resizable: false,
-    minimizable: false,
-    maximizable: false,
-    fullscreenable: false,
-    title: "Sign in with Google",
-    autoHideMenuBar: true,
-    backgroundColor: "#ffffff",
-    webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-  });
+function startLocalServer() {
+  return new Promise((resolve, reject) => {
+    const distPath = path.join(__dirname, "..", "dist");
 
-  popup.setMenuBarVisibility(false);
-  popup.loadURL(authUrl);
+    localServer = http.createServer((req, res) => {
+      const url = new URL(req.url, "http://localhost");
 
-  // Check if URL contains our auth token (from server redirect)
-  function tryExtractToken(url) {
-    try {
-      if (!url || !url.includes("token=")) return false;
-      // Only match our frontend URL with token
-      if (!url.includes("curiousteamlearning.com") && !url.includes("localhost")) return false;
+      // ---- Google Auth Callback ----
+      if (url.pathname === "/auth-callback") {
+        const token = url.searchParams.get("token");
+        const isNew = url.searchParams.get("new");
 
-      const parsed = new URL(url);
-      const token = parsed.searchParams.get("token");
-      if (!token) return false;
+        if (token && mainWindow && !mainWindow.isDestroyed()) {
+          const nav = isNew === "true" ? "/?new=true" : "/";
+          mainWindow.webContents.executeJavaScript(
+            "localStorage.setItem('jwtoken','" + token + "');" +
+            "window.location.href='" + nav + "';"
+          );
+          if (mainWindow.isMinimized()) mainWindow.restore();
+          mainWindow.focus();
+        }
 
-      const isNew = parsed.searchParams.get("new");
-      const nav = isNew === "true" ? "/?new=true" : "/";
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+        res.end(
+          '<!DOCTYPE html><html><head><title>Login Successful</title></head>' +
+          '<body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f0f9ff;">' +
+          '<div style="text-align:center;padding:3rem;background:white;border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,0.08);max-width:400px;">' +
+          '<h2 style="color:#1765a4;margin-bottom:0.5rem;">✅ Login Successful!</h2>' +
+          '<p style="color:#666;margin-bottom:1.5rem;">You can close this tab and return to the app.</p>' +
+          '</div></body></html>'
+        );
+        return;
+      }
 
-      // Inject token into main window and navigate
-      mainWindow.webContents.executeJavaScript(
-        "localStorage.setItem('jwtoken','" + token + "');" +
-        "window.location.href='" + nav + "';"
-      );
+      // ---- Serve Static Files ----
+      let pathname = decodeURIComponent(url.pathname);
+      if (pathname === "/") pathname = "/index.html";
 
-      if (!popup.isDestroyed()) popup.close();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
+      let filePath = path.join(distPath, pathname);
 
-  // Catch token in redirect (renderer-initiated navigation)
-  popup.webContents.on("will-navigate", (event, url) => {
-    if (url.includes("token=")) {
-      event.preventDefault();
-      tryExtractToken(url);
-    }
-  });
+      // Security: prevent path traversal
+      const normalizedFile = path.resolve(filePath);
+      const normalizedDist = path.resolve(distPath);
+      if (!normalizedFile.startsWith(normalizedDist)) {
+        res.writeHead(403);
+        res.end("Forbidden");
+        return;
+      }
 
-  // Catch token after navigation completes (HTTP redirects)
-  popup.webContents.on("did-navigate", (_event, url) => {
-    tryExtractToken(url);
-  });
+      // SPA fallback: if file doesn't exist, serve index.html
+      let isFile = false;
+      try {
+        const stat = fs.statSync(filePath);
+        isFile = stat.isFile();
+      } catch (e) {
+        isFile = false;
+      }
 
-  popup.on("closed", () => {
-    // User closed popup without completing login — do nothing
+      if (!isFile) {
+        filePath = path.join(distPath, "index.html");
+      }
+
+      const ext = path.extname(filePath).toLowerCase();
+      const mimeTypes = {
+        ".html": "text/html; charset=utf-8",
+        ".js": "application/javascript; charset=utf-8",
+        ".mjs": "application/javascript; charset=utf-8",
+        ".css": "text/css; charset=utf-8",
+        ".json": "application/json; charset=utf-8",
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".gif": "image/gif",
+        ".svg": "image/svg+xml",
+        ".ico": "image/x-icon",
+        ".woff": "font/woff",
+        ".woff2": "font/woff2",
+        ".ttf": "font/ttf",
+        ".eot": "application/vnd.ms-fontobject",
+        ".webp": "image/webp",
+        ".webmanifest": "application/manifest+json",
+        ".map": "application/json",
+        ".mp4": "video/mp4",
+        ".webm": "video/webm",
+      };
+
+      const contentType = mimeTypes[ext] || "application/octet-stream";
+
+      try {
+        const stat = fs.statSync(filePath);
+        res.writeHead(200, {
+          "Content-Type": contentType,
+          "Content-Length": stat.size,
+          "Cache-Control": ext === ".html" ? "no-cache" : "max-age=31536000",
+        });
+        fs.createReadStream(filePath).pipe(res);
+      } catch (e) {
+        res.writeHead(404);
+        res.end("Not found");
+      }
+    });
+
+    localServer.listen(0, "127.0.0.1", () => {
+      localPort = localServer.address().port;
+      console.log("Local server on port", localPort);
+      resolve(localPort);
+    });
+
+    localServer.on("error", reject);
   });
 }
 
@@ -115,215 +147,147 @@ function createWindow() {
     height: 900,
     minWidth: 1100,
     minHeight: 700,
-
     title: "CuTe Learning",
-
     backgroundColor: "#ffffff",
-
     autoHideMenuBar: true,
-
     titleBarStyle:
-      process.platform === "darwin"
-        ? "hiddenInset"
-        : "default",
-
+      process.platform === "darwin" ? "hiddenInset" : "default",
     titleBarOverlay:
       process.platform === "win32"
-        ? {
-            color: "#ffffff",
-            symbolColor: "#000000",
-            height: 30,
-          }
+        ? { color: "#ffffff", symbolColor: "#000000", height: 30 }
         : false,
-
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
-  // Hide menu bar but don't null it (null removes keyboard shortcuts)
   Menu.setApplicationMenu(null);
   mainWindow.setMenuBarVisibility(false);
 
+  // Load from local HTTP server (packaged) or Vite dev server
   if (!app.isPackaged) {
     mainWindow.loadURL("http://localhost:5173");
   } else {
-    // Use custom protocol so React Router SPA routing works
-    mainWindow.loadURL("cuteapp://./index.html");
+    mainWindow.loadURL("http://127.0.0.1:" + localPort);
   }
 
-  // Handle window.open links
+  // ---- Handle window.open links ----
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-
-    // Google Login
+    // External links → open in system browser
     if (
       url.includes("accounts.google.com") ||
-      url.includes("googleusercontent.com")
+      url.includes("googleusercontent.com") ||
+      url.includes("login.microsoftonline.com") ||
+      url.includes("github.com/login")
     ) {
       shell.openExternal(url);
       return { action: "deny" };
     }
 
-    // Microsoft Login
-    if (url.includes("login.microsoftonline.com")) {
+    // External sites
+    if (
+      !url.includes("curiousteamlearning.com") &&
+      !url.includes("127.0.0.1") &&
+      !url.includes("localhost")
+    ) {
       shell.openExternal(url);
       return { action: "deny" };
     }
 
-    // GitHub Login
-    if (url.includes("github.com/login")) {
-      shell.openExternal(url);
-      return { action: "deny" };
-    }
-
-    // Any external website
-    if (!url.includes("curiousteamlearning.com")) {
-      shell.openExternal(url);
-      return { action: "deny" };
-    }
-
-    // Internal website pages
+    // Internal
     mainWindow.loadURL(url);
     return { action: "deny" };
   });
 
-  // Handle navigation — intercept Google auth, open in popup
+  // ---- Handle navigation ----
   mainWindow.webContents.on("will-navigate", (event, url) => {
-
-    // Allow internal navigation
-    if (url.includes("curiousteamlearning.com")) return;
+    // Allow internal (localhost / our domain)
+    if (url.includes("127.0.0.1")) return;
     if (url.includes("localhost")) return;
-    if (url.startsWith("cuteapp://")) return;
+    if (url.includes("curiousteamlearning.com")) return;
 
-    // Google auth — open in popup window
+    // Google auth → open in SYSTEM BROWSER (shows all accounts!)
     if (url.includes("/auth/google")) {
       event.preventDefault();
-      openGoogleAuthPopup(url);
+      const separator = url.includes("?") ? "&" : "?";
+      const authUrl = url + separator + "callbackPort=" + localPort;
+      shell.openExternal(authUrl);
       return;
     }
 
-    // Everything else — open in external browser
+    // Everything else → system browser
     event.preventDefault();
     shell.openExternal(url);
-
   });
 
   // ==========================================
   // KEYBOARD SHORTCUTS (invisible, no UI)
   // F5 / Ctrl+R = Reload
-  // Alt+Left = Back
-  // F12 / Ctrl+Shift+I = Blocked (DevTools)
+  // Alt+Left   = Back
+  // F12        = Blocked (DevTools)
   // ==========================================
-  mainWindow.webContents.on(
-    "before-input-event",
-    (event, input) => {
+  mainWindow.webContents.on("before-input-event", (event, input) => {
+    const key = input.key.toUpperCase();
 
-      const key = input.key.toUpperCase();
-
-      // Block DevTools
-      if (
-        key === "F12" ||
-        (input.control && input.shift && key === "I") ||
-        (input.meta && input.alt && key === "I")
-      ) {
-        event.preventDefault();
-        return;
-      }
-
-      // Reload: F5 or Ctrl+R / Cmd+R
-      if (
-        key === "F5" ||
-        (input.control && key === "R") ||
-        (input.meta && key === "R")
-      ) {
-        mainWindow.webContents.reload();
-        return;
-      }
-
-      // Back: Alt + Left Arrow
-      if (input.alt && key === "ARROWLEFT") {
-        if (mainWindow.webContents.canGoBack()) {
-          mainWindow.webContents.goBack();
-        }
-        return;
-      }
+    // Block DevTools
+    if (
+      key === "F12" ||
+      (input.control && input.shift && key === "I") ||
+      (input.meta && input.alt && key === "I")
+    ) {
+      event.preventDefault();
+      return;
     }
-  );
+
+    // Reload: F5 or Ctrl+R / Cmd+R
+    if (
+      key === "F5" ||
+      (input.control && key === "R") ||
+      (input.meta && key === "R")
+    ) {
+      mainWindow.webContents.reload();
+      return;
+    }
+
+    // Back: Alt + Left Arrow
+    if (input.alt && key === "ARROWLEFT") {
+      if (mainWindow.webContents.canGoBack()) {
+        mainWindow.webContents.goBack();
+      }
+      return;
+    }
+  });
 
   // Disable Right Click
-  mainWindow.webContents.on(
-    "context-menu",
-    (event) => {
-      event.preventDefault();
-    }
-  );
+  mainWindow.webContents.on("context-menu", (event) => {
+    event.preventDefault();
+  });
 
   // Offline Screen
-  mainWindow.webContents.on(
-    "did-finish-load",
-    () => {
-
-      const script =
-        "(function(){" +
-        "function showOfflinePage(){" +
-        "document.body.innerHTML=" + JSON.stringify(OFFLINE_HTML) + ";" +
-        "}" +
-        "if(!navigator.onLine){showOfflinePage();}" +
-        "window.addEventListener('offline',showOfflinePage);" +
-        "})();";
-
-      mainWindow.webContents.executeJavaScript(script).catch(function(err) {
-        console.error("Offline screen injection error:", err);
-      });
-
-    }
-  );
+  mainWindow.webContents.on("did-finish-load", () => {
+    const script =
+      "(function(){" +
+      "function showOfflinePage(){" +
+      "document.body.innerHTML=" + JSON.stringify(OFFLINE_HTML) + ";" +
+      "}" +
+      "if(!navigator.onLine){showOfflinePage();}" +
+      "window.addEventListener('offline',showOfflinePage);" +
+      "})();";
+    mainWindow.webContents.executeJavaScript(script).catch(console.error);
+  });
 }
 
 // ==========================================
 // APP READY
 // ==========================================
-app.whenReady().then(() => {
-
+app.whenReady().then(async () => {
   nativeTheme.themeSource = "light";
 
-  // ==========================================
-  // REGISTER PROTOCOL HANDLER (SPA fallback)
-  // Any unknown route → serves index.html
-  // ==========================================
-  protocol.handle("cuteapp", (request) => {
-    const url = new URL(request.url);
-    let pathname = decodeURIComponent(url.pathname);
-
-    // Default to index.html
-    if (pathname === "/" || pathname === "") {
-      pathname = "/index.html";
-    }
-
-    const distPath = path.join(__dirname, "..", "dist");
-    const filePath = path.join(distPath, pathname);
-
-    // Security: ensure path is within dist
-    const normalizedFilePath = path.resolve(filePath);
-    const normalizedDistPath = path.resolve(distPath);
-    if (!normalizedFilePath.startsWith(normalizedDistPath)) {
-      return new Response("Forbidden", { status: 403 });
-    }
-
-    // If file exists, serve it directly
-    try {
-      if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-        return net.fetch(pathToFileURL(filePath).toString());
-      }
-    } catch (e) {
-      // Fall through to index.html
-    }
-
-    // SPA fallback: serve index.html for any unmatched route
-    // This is what makes React Router work in the packaged app
-    return net.fetch(pathToFileURL(path.join(distPath, "index.html")).toString());
-  });
+  // Start local server for packaged app
+  if (app.isPackaged) {
+    await startLocalServer();
+  }
 
   createWindow();
 
@@ -332,10 +296,12 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
-
 });
 
 app.on("window-all-closed", () => {
+  if (localServer) {
+    localServer.close();
+  }
   if (process.platform !== "darwin") {
     app.quit();
   }

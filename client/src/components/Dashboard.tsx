@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, NavLink, useParams, useLocation } from "react-router-dom";
 import { List, ListItem, ListItemButton, ListItemText, ListItemIcon } from "@mui/material";
-import { 
-  Loader2, Pen, CalendarClock, ListChecks, User, 
-  Settings, LogOut, TrendingUp, Backpack, Rss, 
+import {
+  Loader2, Pen, CalendarClock, ListChecks, User,
+  Settings, LogOut, TrendingUp, Backpack, Rss,
   Home, Users, Bookmark, Lock,
   GraduationCap,
   UserCog,
-  ShieldAlert, 
+  ShieldAlert,
   Bell,
-  Heart, 
+  Heart,
   MessageCircle,
   Menu,
   Rocket,
@@ -33,7 +33,7 @@ import Profile from "./Profile";
 import SettingsPanel from "./SettingsPanel";
 import StudentManagement from "./StudentManagement";
 import Calendar from "./Calendar";
-import { SyllabusTracker } from "./SyllabusTracker"; 
+import { SyllabusTracker } from "./SyllabusTracker";
 import Muialert from "./Muialert";
 import { UserData } from "../App";
 import MyCourses from "./MyCourses";
@@ -66,7 +66,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  
+
   const [showProfile, setShowProfile] = useState(false);
 
   // State for the Freemium Modal
@@ -76,10 +76,10 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
   // 1. Define who gets to see what
   const isPremiumTeacher = userData.Role === "Teacher" && userData.isVerifiedStaff;
   const isUnverifiedTeacher = userData.Role === "Teacher" && !userData.isVerifiedStaff;
-  const isParent = userData.Role === "Parent"; 
+  const isParent = userData.Role === "Parent";
   const isVerifiedParent = isParent && userData.isVerifiedParent;
   const isUnverifiedParent = isParent && !userData.isVerifiedParent;
-  
+
   // Global State for Teachers to select a student
   const [teacherStudents, setTeacherStudents] = useState<any[]>([]);
   const [selectedStudentUsername, setSelectedStudentUsername] = useState<string | null>(null);
@@ -88,19 +88,19 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
     return location.state?.targetView?.toLowerCase() || localStorage.getItem("currentView") || "Overview";
   });
 
-  const todayDate = new Date().toLocaleDateString('en-US', { 
-    weekday: 'long', 
-    month: 'short', 
-    day: 'numeric' 
+  const todayDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric'
   });
-  
+
   const [activeTab, setActiveTab] = useState(() => {
     const viewToTabMap: Record<string, string> = {
       Overview: "Overview", schedule: "Schedule", syllabus: "Syllabus Tracker", profile: "Profile",
       settings: "Settings", "my-posts": "My Posts", "saved-posts": "Saved Posts",
       report: "Report", management: "Management", "my-courses": "My Courses",
       "the-village": "The Village (Q&A)", "expert-connect": "Expert Connect",
-      "whatsapp-crm": "WhatsApp Support","BulkEmails":"BulkEmails"
+      "whatsapp-crm": "WhatsApp Support", "BulkEmails": "BulkEmails"
     };
     return viewToTabMap[currentView] || "Overview";
   });
@@ -124,24 +124,48 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
 
     // Run whenever the URL changes (triggered by navigate('/dashboard') in the widget)
     syncViewWithStorage();
-  }, [location]); 
+  }, [location]);
 
   useEffect(() => {
-      const fetchOverviewData = async () => {
-          try {
-              const token = localStorage.getItem("jwtoken");
-              const res = await fetch(`${import.meta.env.VITE_API}dashboard-overview`, {
-                  headers: { "Authorization": `Bearer ${token}` }
-              });
-              if (res.ok) {
-                  const stats = await res.json();
-                  setOverviewStats(stats);
-              }
-          } catch (err) {
-              console.error("Overview fetch failed", err);
-          }
-      };
-      fetchOverviewData();
+    const fetchOverviewData = async () => {
+      try {
+        const token = localStorage.getItem("jwtoken");
+        const res = await fetch(`${import.meta.env.VITE_API}dashboard-overview`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (res.ok) {
+
+          const stats = await res.json();
+
+          setOverviewStats(stats);
+
+          localStorage.setItem(
+            "dashboard-overview-cache",
+            JSON.stringify(stats)
+          );
+
+        }
+      } catch (err) {
+
+        console.error("Overview fetch failed", err);
+
+        const cache = localStorage.getItem(
+          "dashboard-overview-cache"
+        );
+
+        if (cache) {
+
+          setOverviewStats(
+            JSON.parse(cache)
+          );
+
+          console.log("Loaded Dashboard Overview from cache.");
+
+        }
+
+      }
+    };
+    fetchOverviewData();
   }, [userData.Role]); // Refetch if role changes
 
   useEffect(() => {
@@ -165,34 +189,34 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
 
   useEffect(() => {
     let target = location.state?.targetView?.toLowerCase();
-    
+
     if (target) {
       if (target === "audit-log") target = "admin-audit-log";
       if (target === "village") target = "the-village";
 
       setCurrentView(target);
-      
+
       const viewToTabMap: Record<string, string> = {
         Overview: "Overview",
-        schedule: "Schedule", 
-        syllabus: "Syllabus Tracker", 
+        schedule: "Schedule",
+        syllabus: "Syllabus Tracker",
         profile: "Profile",
-        settings: "Settings", 
-        "my-posts": "My Posts", 
+        settings: "Settings",
+        "my-posts": "My Posts",
         "saved-posts": "Saved Posts",
-        report: "Report", 
-        management: "Management", 
+        report: "Report",
+        management: "Management",
         "my-courses": "My Courses",
-        "the-village": "The Village (Q&A)", 
+        "the-village": "The Village (Q&A)",
         "expert-connect": "Expert Connect",
-        "manage-users": "Manage Users",           
+        "manage-users": "Manage Users",
         "admin-audit-log": "Security Audit Log",
         "whatsapp-crm": "WhatsApp Support",
-        "crm": "Management" ,
-        "BulkEmails": "Bulk Emails"  
+        "crm": "Management",
+        "BulkEmails": "Bulk Emails"
       };
 
-      setActiveTab(viewToTabMap[target] || "Dashboard"); 
+      setActiveTab(viewToTabMap[target] || "Dashboard");
       localStorage.setItem("currentView", target);
       localStorage.setItem("activeTab", viewToTabMap[target] || "Dashboard");
       window.history.replaceState({}, document.title, "/dashboard");
@@ -209,11 +233,38 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
             headers: { "Authorization": `Bearer ${token}` }
           });
           if (res.ok) {
+
             const data = await res.json();
+
             setTeacherStudents(data);
+
+            localStorage.setItem(
+              "teacher-students-cache",
+              JSON.stringify(data)
+            );
+
           }
         } catch (error) {
-          console.error("Failed to fetch teacher roster globally:", error);
+
+          console.error(
+            "Failed to fetch teacher roster globally:",
+            error
+          );
+
+          const cache = localStorage.getItem(
+            "teacher-students-cache"
+          );
+
+          if (cache) {
+
+            setTeacherStudents(
+              JSON.parse(cache)
+            );
+
+            console.log("Loaded Teacher Roster from cache.");
+
+          }
+
         }
       };
       fetchRoster();
@@ -229,8 +280,8 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "cute_profiles"); 
-      formData.append("cloud_name", "da6jhcsmm");       
+      formData.append("upload_preset", "cute_profiles");
+      formData.append("cloud_name", "da6jhcsmm");
       const cloudinaryRes = await fetch("https://api.cloudinary.com/v1_1/da6jhcsmm/image/upload", { method: "POST", body: formData });
       if (!cloudinaryRes.ok) throw new Error("Failed to upload to Cloudinary");
       const cloudinaryData = await cloudinaryRes.json();
@@ -259,25 +310,25 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
   const SignOut = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API}signout`, {
-        method: "POST", 
+        method: "POST",
         headers: { "Content-Type": "application/json" },
       });
 
       if (res.ok) {
-        localStorage.removeItem("jwtoken"); 
+        localStorage.removeItem("jwtoken");
         localStorage.removeItem("Username");
         localStorage.removeItem("Photo");
         navigate("/");
         window.location.reload(); // 🚨 Flushes all leftover React state from memory
       } else {
         const data = await res.json();
-        setAlertSeverity("error"); 
-        setAlertMessage(data.error || "Failed to log out"); 
+        setAlertSeverity("error");
+        setAlertMessage(data.error || "Failed to log out");
         setShowAlert(true);
       }
     } catch (error) {
       // 🚨 Fallback if the server is down
-      localStorage.removeItem("jwtoken"); 
+      localStorage.removeItem("jwtoken");
       localStorage.removeItem("Username");
       localStorage.removeItem("Photo");
       navigate("/");
@@ -290,35 +341,35 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
     try {
       const token = localStorage.getItem("jwtoken");
       const res = await fetch(`${import.meta.env.VITE_API}admin/request-staff-approval`, {
-        method: "POST", 
-        headers: { 
-          "Content-Type": "application/json", 
-          "Authorization": `Bearer ${token}` 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         }
       });
-      
+
       const data = await res.json();
-      
+
       if (res.ok) {
-        setAlertSeverity("success"); 
-        setAlertMessage(data.message); 
+        setAlertSeverity("success");
+        setAlertMessage(data.message);
         setShowAlert(true);
-        
+
         if (userData.Role === "Parent") {
           setUserData(prev => ({ ...prev, parentVerificationRequested: true }));
         } else {
           setUserData(prev => ({ ...prev, staffApprovalRequested: true }));
         }
-        
-        setTimeout(() => setShowUnlockModal(false), 2000); 
+
+        setTimeout(() => setShowUnlockModal(false), 2000);
       } else {
-        setAlertSeverity("error"); 
-        setAlertMessage(data.error || "Failed to send request."); 
+        setAlertSeverity("error");
+        setAlertMessage(data.error || "Failed to send request.");
         setShowAlert(true);
       }
     } catch (error) {
-      setAlertSeverity("error"); 
-      setAlertMessage("Network error. Please try again later."); 
+      setAlertSeverity("error");
+      setAlertMessage("Network error. Please try again later.");
       setShowAlert(true);
     } finally {
       setIsRequesting(false);
@@ -365,23 +416,23 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
     const renderListItem = (item: any) => {
       const isActive = activeTab === item.text;
       return (
-        <ListItem 
-          disablePadding 
-          key={item.text} 
+        <ListItem
+          disablePadding
+          key={item.text}
           className={`mb-1 ${item.mobileHidden ? 'hidden md:block' : ''}`}
           sx={{ display: item.mobileHidden ? { xs: 'none', md: 'block' } : 'block' }}
         >
           <ListItemButton
             onClick={() => {
-              if (item.path) { handleNavigation(item.path); } 
+              if (item.path) { handleNavigation(item.path); }
               else {
-                setCurrentView(item.view); 
+                setCurrentView(item.view);
                 setActiveTab(item.text);
                 localStorage.setItem("currentView", item.view);
                 localStorage.setItem("activeTab", item.text);
               }
               // 🚨 THE FIX: Automatically close the sidebar on mobile when a link is clicked!
-              setIsSidebarOpen(false); 
+              setIsSidebarOpen(false);
             }}
             sx={{
               borderRadius: "12px",
@@ -391,20 +442,20 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
             }}
           >
             <ListItemIcon sx={{ color: "inherit", minWidth: "40px" }}>{item.icon}</ListItemIcon>
-            <ListItemText 
+            <ListItemText
               primary={
                 <div className="flex items-center gap-2">
                   <span>{item.text}</span>
                   {item.isLocked && <Lock size={16} strokeWidth={2.5} className="opacity-90" />}
                 </div>
-              } 
-              slotProps={{ 
-                primary: { 
+              }
+              slotProps={{
+                primary: {
                   sx: {
-                    fontWeight: isActive || item.isLocked ? 700 : 500, 
-                    fontFamily: '"Arimo", sans-serif' 
+                    fontWeight: isActive || item.isLocked ? 700 : 500,
+                    fontFamily: '"Arimo", sans-serif'
                   }
-                } 
+                }
               }}
             />
           </ListItemButton>
@@ -433,22 +484,22 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
     // --- 3. RETURN THE UNIFIED LIST ---
     return (
       <List className="flex-1 overflow-y-auto px-2 py-2 custom-scrollbar flex flex-col">
-        
+
         {/* Basic Items (No Header) */}
         {renderGroup("", basicItems, "")}
-        
+
         {/* Category Headers */}
         {renderGroup("Guidance & Support", parentItems, "text-rose-400")}
         {renderGroup("Academy Tools", premiumItems, "text-slate-400")}
         {renderGroup("Admin Tools", adminItems, "text-brand-blue")}
-        
+
         {/* Unverified Teacher Banner */}
         {isUnverifiedTeacher && (
           <div className="mt-6 mx-4 bg-linear-to-br from-brand-blue to-blue-600 rounded-2xl p-5 text-white text-center shadow-lg">
             <Lock className="mx-auto mb-2 opacity-80" size={24} />
             <p className="text-xs font-medium mb-3">Official educator tools</p>
-            <button 
-              onClick={() => { setShowUnlockModal(true); setIsSidebarOpen(false); }} 
+            <button
+              onClick={() => { setShowUnlockModal(true); setIsSidebarOpen(false); }}
               className="w-full bg-white text-brand-blue text-xs font-black py-2.5 rounded-xl active:scale-95 transition"
             >
               UNLOCK ACADEMY
@@ -460,24 +511,24 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
         <ListItem disablePadding className="mt-auto pt-8 mb-4 px-2 hidden md:block">
           <ListItemButton onClick={SignOut} sx={{ borderRadius: "12px", color: "#e11d48", "&:hover": { backgroundColor: "#fff1f2" } }}>
             <ListItemIcon sx={{ color: "inherit", minWidth: "40px" }}><LogOut size={22} /></ListItemIcon>
-            <ListItemText 
-              primary="Sign Out" 
-              slotProps={{ 
-                primary: { 
-                  sx: { fontWeight: 700 } 
-                } 
-              }} 
+            <ListItemText
+              primary="Sign Out"
+              slotProps={{
+                primary: {
+                  sx: { fontWeight: 700 }
+                }
+              }}
             />
           </ListItemButton>
         </ListItem>
-        
+
       </List>
     );
   };
 
   return (
     <div className="fixed inset-0 flex h-dvh w-full bg-slate-50 overflow-hidden font-body overscroll-none">
-      
+
       {/* =========================================
           DESKTOP LEFT SIDEBAR (Hidden on Mobile) 
       ========================================= */}
@@ -523,7 +574,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
       ========================================= */}
       {/* Added pb-16 on mobile to make room for the new bottom nav bar */}
       <div className="flex-1 overflow-hidden bg-slate-50 relative flex flex-col pb-16 md:pb-0">
-        
+
         {/* 🌌 DYNAMIC DEEP SPACE HEADER */}
         <div className="h-48 md:h-56 bg-slate-900 absolute top-0 left-0 w-full rounded-b-[3rem] shadow-inner overflow-hidden z-0">
           <div className="absolute top-0 right-0 md:right-32 w-96 h-96 bg-brand-orange opacity-10 rounded-full blur-[80px] animate-nebula-drift" style={{ animationDelay: '0s' }}></div>
@@ -580,9 +631,9 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
 
         {/* TOP BAR (Hamburger + Mobile Date) */}
         <div className="absolute top-4 md:top-6 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-90 flex items-center justify-between md:justify-center">
-          
+
           {/* 🚨 NEW: Mobile Top-Left Hamburger Menu */}
-          <button 
+          <button
             onClick={() => setIsSidebarOpen(true)}
             className="md:hidden w-10 h-10 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white shadow-lg hover:bg-white/20 active:scale-95 transition-all"
           >
@@ -611,28 +662,28 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
             </button>
           </div>
         </div>
-        
+
         <div className="absolute top-0 left-0 w-full flex justify-center z-1000 pointer-events-none">
           <div className="pointer-events-auto">
-            <Notification 
-              showNotifications={showNotifications} 
+            <Notification
+              showNotifications={showNotifications}
               setShowNotifications={setShowNotifications}
               closeNotification={() => setShowNotifications(false)}
-              setUnreadCount={setUnreadCount} 
-              customClasses="fixed bottom-[76px] left-1/2 -translate-x-1/2 w-[92vw] max-w-sm rounded-2xl shadow-2xl md:absolute md:bottom-auto md:top-20 md:left-1/2 md:-translate-x-1/2 md:w-96" 
+              setUnreadCount={setUnreadCount}
+              customClasses="fixed bottom-[76px] left-1/2 -translate-x-1/2 w-[92vw] max-w-sm rounded-2xl shadow-2xl md:absolute md:bottom-auto md:top-20 md:left-1/2 md:-translate-x-1/2 md:w-96"
             />
           </div>
         </div>
-        
+
         {/* MAIN CONTENT AREA */}
         <div className="relative z-0 px-0 pt-16 pb-0 md:p-8 max-w-7xl mx-auto w-full mt-2 md:mt-8 flex-1 flex flex-col min-h-0">
-          
+
           {isPremiumTeacher && ["syllabus", "my-courses"].includes(currentView) && (
             <div className="mb-6 mx-4 md:mx-0 bg-white px-6 py-4 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4 overflow-x-auto custom-scrollbar shrink-0">
               <span className="text-sm font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">Viewing:</span>
-              
+
               <div className="flex items-center gap-2">
-                
+
                 {/* 1. Class Insights (Only relevant for Syllabus View) */}
                 {currentView === "syllabus" && (
                   <button onClick={() => setSelectedStudentUsername(null)} className={`flex items-center gap-2 px-4 py-2 rounded-full border transition whitespace-nowrap ${selectedStudentUsername === null ? 'border-brand-orange text-brand-orange bg-orange-50 font-bold' : 'border-gray-200 text-gray-500 font-medium hover:border-brand-orange hover:bg-orange-50/50'}`}>
@@ -641,8 +692,8 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
                 )}
 
                 {/* 2. Teacher's Own View (Me) */}
-                <button 
-                  onClick={() => setSelectedStudentUsername(localStorage.getItem("Username") || localStorage.getItem("username"))} 
+                <button
+                  onClick={() => setSelectedStudentUsername(localStorage.getItem("Username") || localStorage.getItem("username"))}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full border transition whitespace-nowrap ${(selectedStudentUsername === (localStorage.getItem("Username") || localStorage.getItem("username"))) ? 'border-slate-900 text-slate-900 bg-slate-100 font-bold' : 'border-gray-200 text-gray-500 font-medium hover:border-slate-900 hover:bg-slate-50'}`}
                 >
                   <UserCircle size={16} /> My {currentView === 'syllabus' ? 'Syllabus' : 'Courses'}
@@ -670,7 +721,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
 
                 {/* 🚨 NEW: 4. Add Student Button */}
                 <div className="w-px h-6 bg-gray-200 mx-1 shrink-0" />
-                <button 
+                <button
                   onClick={() => {
                     // Update state to render the StudentManagement component
                     setCurrentView("management");
@@ -689,21 +740,21 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
               </div>
             </div>
           )}
-        
+
 
           <div className={`relative flex-1 min-h-0 flex flex-col bg-white transition-all duration-300
               rounded-t-4xl md:rounded-4xl 
               border-t md:border border-gray-100 border-x-0 md:border-x
               shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] md:shadow-xl
-              ${(currentView === "report" || currentView === "whatsapp-crm") 
-                  ? "p-0 overflow-hidden" 
-                  : "pt-4 px-4 md:pt-6 md:px-6 overflow-y-auto dashboard-content-scroll"}
+              ${(currentView === "report" || currentView === "whatsapp-crm")
+              ? "p-0 overflow-hidden"
+              : "pt-4 px-4 md:pt-6 md:px-6 overflow-y-auto dashboard-content-scroll"}
           `}>
-            <div className={`relative w-full ${(currentView === "report" || currentView === "whatsapp-crm") 
-              ? "h-full" 
+            <div className={`relative w-full ${(currentView === "report" || currentView === "whatsapp-crm")
+              ? "h-full"
               : "min-h-full pb-8 md:pb-10"} rounded-lg
             `}>
-              
+
               {/* COMPONENT RENDERING ROUTER */}
               {currentView === "Overview" && <Overview user={userData} data={overviewStats} />}
               {currentView === "profile" && <Profile />}
@@ -711,7 +762,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
               {currentView === "settings" && <SettingsPanel userData={userData} setUserData={setUserData} />}
               {currentView === "saved-posts" && <SavedPosts />}
               {currentView === "my-posts" && <MyPosts />}
-              
+
               {currentView === "syllabus" && !isParent && <SyllabusTracker role={userData.Role || "student"} selectedStudentUsername={selectedStudentUsername} />}
               {currentView === "my-courses" && !isParent && <MyCourses role={userData.Role} selectedStudentUsername={selectedStudentUsername || undefined} />}
               {currentView === "report" && userData?.Role?.toLowerCase() === "student" && <PlanetryPath />}
@@ -734,7 +785,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
               )}
               {currentView === "expert-connect" && isParent && (
                 isVerifiedParent ? (
-                  <ExpertConnect userData={userData} /> 
+                  <ExpertConnect userData={userData} />
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-center p-8">
                     <div className="w-24 h-24 bg-rose-50 text-rose-300 rounded-full flex items-center justify-center mb-6">
@@ -744,7 +795,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
                     <p className="text-gray-500 mt-3 max-w-md mx-auto leading-relaxed">
                       To protect our community and ensure a safe space, please request Admin Verification to unlock direct 1-on-1 messaging.
                     </p>
-                    <button 
+                    <button
                       onClick={() => setShowUnlockModal(true)}
                       className="mt-8 px-8 py-3.5 bg-rose-500 text-white font-black tracking-wide rounded-full hover:bg-rose-600 transition shadow-lg shadow-rose-500/30 active:scale-95"
                     >
@@ -753,7 +804,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
                   </div>
                 )
               )}
-              
+
 
             </div>
           </div>
@@ -765,10 +816,10 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
       ========================================= */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white flex items-center z-1000 pb-safe 
         shadow-[0_-10px_20px_-5px_rgba(0,0,0,0.1)] border-t border-gray-100">
-        
+
         {/* ESCAPE HATCH TO SOCIAL FEED */}
-        <button 
-          onClick={() => navigate("/")} 
+        <button
+          onClick={() => navigate("/")}
           className="flex flex-col items-center justify-center flex-1 h-full text-gray-400 hover:text-brand-orange transition-colors"
         >
           <Home size={24} strokeWidth={2} />
@@ -776,7 +827,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
         </button>
 
         {/* ALERTS */}
-        <button 
+        <button
           onClick={(e) => { e.stopPropagation(); setShowNotifications(!showNotifications); }}
           className="flex flex-col items-center justify-center flex-1 h-full text-gray-400 hover:text-brand-orange transition-colors"
         >
@@ -788,7 +839,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
         </button>
 
         {/* PROFILE */}
-        <button 
+        <button
           onClick={(e) => { e.stopPropagation(); setShowProfile(!showProfile); }}
           className={`flex flex-col items-center justify-center flex-1 h-full transition-colors ${showProfile ? "text-brand-orange" : "text-gray-400 hover:text-brand-orange"}`}
         >
@@ -799,7 +850,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
         </button>
       </div>
 
-      
+
 
       {/* =========================================
           MODALS & ALERTS
@@ -808,37 +859,36 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
         <div className="fixed inset-0 z-999 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-4xl p-8 max-w-sm w-full text-center shadow-2xl relative animate-in zoom-in duration-200">
             <button onClick={() => setShowUnlockModal(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition">✕</button>
-            
+
             <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${isUnverifiedParent ? 'bg-rose-50' : 'bg-blue-50'}`}>
               {isUnverifiedParent ? <ShieldAlert className="text-rose-500 w-8 h-8" /> : <Lock className="text-brand-blue w-8 h-8" />}
             </div>
-            
+
             <h3 className="text-xl font-black text-slate-800 mb-2">
               {isUnverifiedParent ? "Verify Your Account" : "Unlock Academy"}
             </h3>
-            
+
             <p className="text-sm text-slate-500 mb-6 font-medium">
-              {isUnverifiedParent 
+              {isUnverifiedParent
                 ? "Protecting our community is our top priority. Request verification to unlock direct messaging with our Verified Educators."
                 : "Are you an official educator at Cute Learning? Request admin approval to access student management and syllabus tools."}
             </p>
-            
+
             {(() => {
-              const isPending = isUnverifiedParent 
-                ? userData.parentVerificationRequested 
+              const isPending = isUnverifiedParent
+                ? userData.parentVerificationRequested
                 : userData.staffApprovalRequested;
 
               return (
-                <button 
+                <button
                   onClick={handleRequestApproval}
                   disabled={isRequesting || isPending}
-                  className={`w-full py-3.5 rounded-xl font-black transition active:scale-95 shadow-lg ${
-                    isPending 
-                      ? "bg-slate-200 text-slate-500 cursor-not-allowed shadow-none" 
-                      : isUnverifiedParent 
-                        ? "bg-rose-500 text-white hover:bg-rose-600 shadow-rose-500/20" 
-                        : "bg-brand-orange text-white hover:bg-orange-600 shadow-orange-500/20"
-                  }`}
+                  className={`w-full py-3.5 rounded-xl font-black transition active:scale-95 shadow-lg ${isPending
+                    ? "bg-slate-200 text-slate-500 cursor-not-allowed shadow-none"
+                    : isUnverifiedParent
+                      ? "bg-rose-500 text-white hover:bg-rose-600 shadow-rose-500/20"
+                      : "bg-brand-orange text-white hover:bg-orange-600 shadow-orange-500/20"
+                    }`}
                 >
                   {isRequesting ? (
                     <span className="flex items-center justify-center gap-2">
@@ -858,14 +908,14 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
         </div>
       )}
 
-      
+
       {/* 🚨 YOUR NAVPROFILE COMPONENT */}
-      <Navprofile 
-        setShowProfile={setShowProfile} 
-        showProfile={showProfile} 
-        closeNavProfile={() => setShowProfile(false)} 
-        userData={userData} 
-        setUserData={setUserData} 
+      <Navprofile
+        setShowProfile={setShowProfile}
+        showProfile={showProfile}
+        closeNavProfile={() => setShowProfile(false)}
+        userData={userData}
+        setUserData={setUserData}
       />
 
       {/* =========================================
@@ -880,7 +930,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsSidebarOpen(false)}
-              className="md:hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-2000" 
+              className="md:hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-2000"
             />
 
             {/* Sidebar Drawer */}
@@ -909,7 +959,7 @@ const Dashboard = ({ userData, setUserData }: DashboardProps) => {
 
               {/* 🚨 THE MAGIC: Calls the exact same List items as Desktop! */}
               <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col pt-2 pb-6">
-                {getDrawerContent()} 
+                {getDrawerContent()}
               </div>
             </motion.div>
           </>
